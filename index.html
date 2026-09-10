@@ -200,9 +200,11 @@
   .ca-soon{ font-size:12.5px; color:var(--muted); flex:1; }
   .ca-copy{
     font-family:'Space Mono', monospace; font-size:11px; border:1px solid var(--line);
-    background:transparent; color:var(--ink); border-radius:8px; padding:6px 13px; cursor:pointer; white-space:nowrap;
+    background:transparent; color:var(--ink); border-radius:8px; padding:6px 13px; cursor:pointer;
+    white-space:nowrap; text-decoration:none; display:inline-block;
   }
   .ca-copy:hover{ opacity:.78; }
+  .ca-buy{ background:var(--track); color:var(--accent-ink); border-color:var(--track); }
   .ca-copy:focus-visible{ outline:2px solid var(--track); outline-offset:2px; }
 
   /* sections */
@@ -301,8 +303,8 @@
           </div>
           <div class="earn-readout">
             <div class="e-label">Earned this session</div>
-            <div class="earn-amt mono"><span id="earned">0.0000000</span> <span class="unit">SOL</span></div>
-            <div class="earn-fiat mono" id="earnedFiat">≈ €0.00</div>
+            <div class="earn-amt mono"><span id="earned">0.0</span> <span class="unit">SOL</span></div>
+            <div class="earn-fiat mono" id="earnedFiat">≈ $0.00</div>
           </div>
         </div>
       </div>
@@ -400,6 +402,7 @@ $ grep -rE "privateKey|custody" src/   <span class="ok"># no matches — Encore 
 
 </div>
 
+<script src="ca.js"></script>
 <script>
 (function(){
   // ---- demo catalogue: each track carries its colour AND a tiny synth voice ----
@@ -428,17 +431,19 @@ $ grep -rE "privateKey|custody" src/   <span class="ok"># no matches — Encore 
   var lib = el('lib');
   var root = document.documentElement;
 
-  var playing = false, seconds = 0, earned = 0, current = -1;
+  var playing = false, current = -1;
   var RATE = 0.0000001111;   // illustrative SOL/sec -> ~EUR 0.01 per 10 min
-  var SOL_EUR = 150;
-  var lastTick = 0, tickAcc = 0;
+  var SOL_USD = 150;         // rough SOL→USD for the illustrative fiat readout
+  // wall-clock timing: robust against frame drops and track changes
+  var accumSec = 0, lastResume = 0, lastDraw = 0;
+  function elapsed(){ return playing ? accumSec + (performance.now()-lastResume)/1000 : accumSec; }
   var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   var PLAY_PATH = 'M8 5v14l11-7z', PAUSE_PATH = 'M6 5h4v14H6zM14 5h4v14h-4z';
 
   // ---- token contract address ----
-  // Paste the real Solana contract address between the quotes when the token is live.
-  // While empty, the site shows "drops at launch" and never a placeholder address.
-  var CA = '';
+  // On the live site the address is loaded from ca.js (window.ENCORE_CA).
+  // Empty => the site shows "drops at launch" and never a placeholder address.
+  var CA = (window.ENCORE_CA || '').trim();
 
   // ---------- Web Audio (generative, self-contained) ----------
   var actx=null, master=null, comp=null, analyser=null, freqData=null;
@@ -612,25 +617,43 @@ $ grep -rE "privateKey|custody" src/   <span class="ok"># no matches — Encore 
   }
   function fmtTime(s){ var m=Math.floor(s/60), ss=Math.floor(s%60); return (m<10?'0':'')+m+':'+(ss<10?'0':'')+ss; }
 
+  // ---- SOL formatter with subscript zero-count (e.g. 0.0₆111100) so tiny amounts read as climbing ----
+  var SUB = '₀₁₂₃₄₅₆₇₈₉';
+  function subscript(n){ return String(n).split('').map(function(d){ return SUB[+d]; }).join(''); }
+  function formatSol(x){
+    if(x <= 0) return '0.0';
+    if(x >= 0.001) return x.toFixed(6);
+    var exp = Math.floor(Math.log10(x));      // e.g. -7
+    var zeros = -exp - 1;                      // zeros after "0." before the first non-zero digit
+    var mant = x / Math.pow(10, exp);          // in [1,10)
+    var digits = String(Math.floor(mant * 1e5)).slice(0, 6); // 6 significant digits, low ones tick fast
+    return '0.0' + subscript(zeros) + digits;
+  }
+  function formatFiat(x){
+    return x < 0.01 ? x.toFixed(5) : x.toFixed(2);
+  }
+
   function frame(ts){
-    if(!lastTick) lastTick = ts;
-    var dt = (ts - lastTick)/1000; lastTick = ts;
-    if(playing){
-      seconds += dt; earned += dt*RATE; tickAcc += dt;
-      if(tickAcc > 0.1){
-        timerEl.textContent = fmtTime(seconds);
-        earnedEl.textContent = earned.toFixed(7);
-        earnedFiatEl.textContent = '≈ €' + (earned*SOL_EUR).toFixed(2);
-        tickAcc = 0;
-      }
+    if(playing && ts - lastDraw > 80){
+      var s = elapsed();
+      timerEl.textContent = fmtTime(s);
+      var e = s * RATE;
+      earnedEl.textContent = formatSol(e);
+      earnedFiatEl.textContent = '≈ $' + formatFiat(e*SOL_USD);
+      lastDraw = ts;
     }
     drawEq(ts); requestAnimationFrame(frame);
   }
   function toggle(){
-    playing = !playing;
+    if(playing){
+      accumSec += (performance.now() - lastResume)/1000;  // bank the interval just played
+      playing = false; stopAudio();
+    } else {
+      lastResume = performance.now();
+      playing = true; startAudio();
+    }
     playIcon.querySelector('path').setAttribute('d', playing ? PAUSE_PATH : PLAY_PATH);
     playBtn.setAttribute('aria-label', playing ? 'Pause the demo' : 'Play the demo');
-    if(playing){ lastTick = 0; startAudio(); } else { stopAudio(); }
   }
   playBtn.addEventListener('click', toggle);
 
@@ -640,6 +663,7 @@ $ grep -rE "privateKey|custody" src/   <span class="ok"># no matches — Encore 
     wrap.innerHTML =
       '<span class="ca-label">Contract</span>' +
       '<span class="ca-addr" id="caAddr">'+CA+'</span>' +
+      '<a class="ca-copy ca-buy" href="https://pump.fun/coin/'+encodeURIComponent(CA)+'" target="_blank" rel="noopener">Buy ↗</a>' +
       '<button class="ca-copy" id="caCopy" type="button">Copy</button>';
     var btn = el('caCopy');
     function done(){ btn.textContent = 'Copied ✓'; setTimeout(function(){ btn.textContent = 'Copy'; }, 1400); }
