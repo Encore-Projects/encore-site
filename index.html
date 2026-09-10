@@ -571,6 +571,7 @@ $ grep -rE "privateKey|custody" src/   <span class="ok"># no matches — Encore 
     tabLibrary.classList.toggle('is-active', !isPlayer);
     tabPlayer.setAttribute('aria-selected', isPlayer);
     tabLibrary.setAttribute('aria-selected', !isPlayer);
+    if(isPlayer) sizeCanvas();   // canvas is measurable again now the player is visible
   }
   tabPlayer.addEventListener('click', function(){ showPanel('player'); });
   tabLibrary.addEventListener('click', function(){ showPanel('library'); });
@@ -587,8 +588,10 @@ $ grep -rE "privateKey|custody" src/   <span class="ok"># no matches — Encore 
   function cssVar(n){ return getComputedStyle(root).getPropertyValue(n).trim(); }
   function drawEq(t){
     var w = canvas.clientWidth, h = canvas.clientHeight || 56;
+    if(w <= 0 || h <= 0) return;            // player hidden (Library tab): nothing to draw
     ctx.clearRect(0,0,w,h);
     var gap = 3, bw = (w - gap*(bars-1)) / bars;
+    if(bw <= 0) return;                     // too narrow to draw safely
     var c1 = cssVar('--track'), c2 = cssVar('--track2'), dim = cssVar('--eq-dim');
     var live = audioActive && analyser && !reduce;
     if(live) analyser.getByteFrequencyData(freqData);
@@ -610,6 +613,8 @@ $ grep -rE "privateKey|custody" src/   <span class="ok"># no matches — Encore 
     }
   }
   function roundRect(x,y,w,h,r){
+    if(w <= 0 || h <= 0) return;
+    r = Math.max(0, Math.min(r, w/2, h/2));  // never pass a negative radius to arcTo
     ctx.beginPath(); ctx.moveTo(x+r,y);
     ctx.arcTo(x+w,y,x+w,y+h,r); ctx.arcTo(x+w,y+h,x,y+h,r);
     ctx.arcTo(x,y+h,x,y,r); ctx.arcTo(x,y,x+w,y,r);
@@ -634,15 +639,18 @@ $ grep -rE "privateKey|custody" src/   <span class="ok"># no matches — Encore 
   }
 
   function frame(ts){
-    if(playing && ts - lastDraw > 80){
-      var s = elapsed();
-      timerEl.textContent = fmtTime(s);
-      var e = s * RATE;
-      earnedEl.textContent = formatSol(e);
-      earnedFiatEl.textContent = '≈ $' + formatFiat(e*SOL_USD);
-      lastDraw = ts;
-    }
-    drawEq(ts); requestAnimationFrame(frame);
+    requestAnimationFrame(frame);   // keep the loop alive no matter what happens below
+    try {
+      if(playing && ts - lastDraw > 80){
+        var s = elapsed();
+        timerEl.textContent = fmtTime(s);
+        var e = s * RATE;
+        earnedEl.textContent = formatSol(e);
+        earnedFiatEl.textContent = '≈ $' + formatFiat(e*SOL_USD);
+        lastDraw = ts;
+      }
+      drawEq(ts);
+    } catch(err) { /* never let a draw error freeze the timer */ }
   }
   function toggle(){
     if(playing){
