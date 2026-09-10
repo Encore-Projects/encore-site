@@ -207,6 +207,50 @@
   .ca-buy{ background:var(--track); color:var(--accent-ink); border-color:var(--track); }
   .ca-copy:focus-visible{ outline:2px solid var(--track); outline-offset:2px; }
 
+  /* withdraw (preview) */
+  .withdraw-bar{ display:flex; align-items:center; gap:12px; margin-top:14px; flex-wrap:wrap; }
+  .wd-btn{
+    font-family:'Space Mono', monospace; font-size:13px; letter-spacing:0.02em;
+    border:1px solid var(--track); background:transparent; color:var(--ink);
+    border-radius:11px; padding:11px 20px; cursor:pointer; transition:opacity .15s ease;
+  }
+  .wd-btn:hover{ opacity:.78; }
+  .wd-btn:focus-visible{ outline:2px solid var(--track); outline-offset:2px; }
+  .wd-hint{ font-size:11.5px; color:var(--muted); }
+  .wd-panel{ margin-top:12px; background:var(--surface-2); border:1px solid var(--line-soft); border-radius:14px; padding:18px; }
+  .wd-head{ display:flex; align-items:center; justify-content:space-between; margin-bottom:14px; }
+  .wd-title{ font-weight:600; font-size:15px; }
+  .wd-preview{
+    font-family:'Space Mono', monospace; font-size:10px; letter-spacing:0.1em; text-transform:uppercase;
+    color:var(--accent); border:1px solid var(--accent); border-radius:999px; padding:2px 8px;
+  }
+  .wd-row{ display:flex; justify-content:space-between; align-items:baseline; padding:7px 0; font-size:14px; color:var(--muted); }
+  .wd-row .mono{ color:var(--ink); }
+  .wd-total{ border-top:1px dashed var(--line); margin-top:6px; padding-top:12px; }
+  .wd-total span:first-child{ color:var(--ink); font-weight:600; }
+  .wd-total .mono{ color:var(--track); font-size:17px; font-weight:700; }
+  .wd-note{ font-size:11.5px; color:var(--muted); line-height:1.5; margin:10px 0 14px; }
+  .wd-dest{ display:flex; align-items:center; gap:10px; flex-wrap:wrap; margin-bottom:12px; }
+  .wd-alt{
+    font-family:'Space Mono', monospace; font-size:12px; border:1px solid var(--line);
+    background:transparent; color:var(--ink); border-radius:9px; padding:10px 14px; cursor:pointer; white-space:nowrap;
+  }
+  .wd-alt:hover{ opacity:.78; }
+  .wd-or{ font-size:12px; color:var(--muted); }
+  .wd-input{
+    flex:1; min-width:180px; font-family:'Space Mono', monospace; font-size:12.5px;
+    background:var(--surface); border:1px solid var(--line); border-radius:9px; padding:10px 12px; color:var(--ink);
+  }
+  .wd-input:focus{ outline:2px solid var(--track); outline-offset:1px; }
+  .wd-submit{
+    width:100%; font-family:'Space Mono', monospace; font-size:13px; letter-spacing:0.02em;
+    background:var(--track); color:var(--accent-ink); border:1px solid var(--track);
+    border-radius:11px; padding:13px; cursor:pointer; transition:opacity .15s ease;
+  }
+  .wd-submit:hover{ opacity:.85; }
+  .wd-submit:disabled{ opacity:.5; cursor:not-allowed; }
+  .wd-status{ font-size:12.5px; color:var(--track); margin:12px 0 0; text-align:center; }
+
   /* sections */
   section{ margin-top:38px; }
   .sec-head{ display:flex; align-items:center; gap:12px; margin-bottom:18px; }
@@ -308,6 +352,29 @@
           </div>
         </div>
       </div>
+
+      <div class="withdraw-bar">
+        <button class="wd-btn" id="withdrawBtn" type="button">Withdraw</button>
+        <span class="wd-hint">Preview · withdrawals open at launch</span>
+      </div>
+      <div class="wd-panel" id="wdPanel" hidden>
+        <div class="wd-head">
+          <span class="wd-title">Withdraw your balance</span>
+          <span class="wd-preview">Preview</span>
+        </div>
+        <div class="wd-row"><span>Available</span><span class="mono" id="wdAvail">$0.00</span></div>
+        <div class="wd-row"><span>Minimum</span><span class="mono">$10.00</span></div>
+        <div class="wd-row"><span>Withdrawal fee (flat)</span><span class="mono">$3.00</span></div>
+        <div class="wd-row wd-total"><span>You receive</span><span class="mono" id="wdReceive">$0.00</span></div>
+        <p class="wd-note">The fee is deducted from your payout — you never pay it upfront. Funds go to a wallet you control; Encore never holds them.</p>
+        <div class="wd-dest">
+          <button class="wd-alt" id="wdConnect" type="button">Connect wallet</button>
+          <span class="wd-or">or</span>
+          <input class="wd-input" id="wdAddr" type="text" placeholder="Paste your Solana address" autocomplete="off" spellcheck="false">
+        </div>
+        <button class="wd-submit" id="wdSubmit" type="button">Request withdrawal</button>
+        <p class="wd-status" id="wdStatus" hidden></p>
+      </div>
     </div>
 
     <div class="panel" id="panelLibrary" role="tabpanel" aria-labelledby="tabLibrary" hidden>
@@ -368,7 +435,7 @@
         <span class="you">100% → YOU</span>
         <span class="fee">FEE</span>
       </div>
-      <p>At launch, <strong>100% of the revenue a play generates goes to the listener.</strong> Encore keeps nothing for now — the goal is to grow the listening base first. A small platform fee may be introduced later, and it'll be shown here in the open when it is.</p>
+      <p><strong>100% of the revenue a play generates is attributed to you</strong> — Encore takes no cut of your plays. The platform's only fee is a <strong>flat withdrawal fee</strong>, shown transparently when you cash out and deducted from the payout — never charged before, and never a surprise.</p>
     </div>
   </section>
 
@@ -689,6 +756,34 @@ $ grep -rE "privateKey|custody" src/   <span class="ok"># no matches — Encore 
       } else { fallback(); }
     });
   })();
+
+  // ---------- withdraw (PREVIEW ONLY: no funds move, no real wallet connect, nothing is sent) ----------
+  var MIN_USD = 10, FEE_USD = 3;
+  var withdrawBtn = el('withdrawBtn'), wdPanel = el('wdPanel');
+  var wdAvail = el('wdAvail'), wdReceive = el('wdReceive');
+  var wdSubmit = el('wdSubmit'), wdStatus = el('wdStatus'), wdConnect = el('wdConnect');
+  function currentUsd(){ return elapsed() * RATE * SOL_USD; }
+  function refreshWithdraw(){
+    var bal = currentUsd();
+    wdAvail.textContent = '$' + bal.toFixed(2);
+    wdReceive.textContent = '$' + (bal >= MIN_USD ? Math.max(0, bal - FEE_USD) : 0).toFixed(2);
+    wdSubmit.disabled = bal < MIN_USD;
+  }
+  function showStatus(msg){ wdStatus.hidden = false; wdStatus.textContent = msg; }
+  withdrawBtn.addEventListener('click', function(){
+    wdPanel.hidden = !wdPanel.hidden;
+    if(!wdPanel.hidden){ refreshWithdraw(); wdStatus.hidden = true; }
+  });
+  wdSubmit.addEventListener('click', function(){
+    refreshWithdraw();
+    showStatus(currentUsd() < MIN_USD
+      ? 'Minimum $' + MIN_USD.toFixed(2) + ' to withdraw.'
+      : 'Withdrawals open at launch — follow @Encore_Projects.');
+  });
+  wdConnect.addEventListener('click', function(){
+    showStatus('Wallet connect opens at launch — this is a preview.');
+  });
+  setInterval(function(){ if(!wdPanel.hidden) refreshWithdraw(); }, 300);
 
   selectTrack(0);
   sizeCanvas();
