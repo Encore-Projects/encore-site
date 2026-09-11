@@ -71,35 +71,72 @@
   .ca-copy:hover{ opacity:.8; }
   .ca-buy{ background:var(--accent); color:#fff; border-color:var(--accent); }
 
-  /* interactive app — dark card */
-  .app{ --a-bg:#111119; --a-surface:#1A1A25; --a-ink:#F2F1EA; --a-muted:#9C9CA8; --a-line:rgba(242,241,234,0.13); --a-line-soft:rgba(242,241,234,0.06);
-    background:var(--a-bg); color:var(--a-ink); border-radius:20px; padding:20px; box-shadow:0 40px 80px -44px var(--shadow), 0 0 0 1px var(--a-line-soft); }
-  .tabs{ display:inline-flex; gap:4px; padding:4px; margin-bottom:16px; background:var(--a-surface); border-radius:12px; }
-  .tab{ font-family:'Space Mono', monospace; font-size:12px; border:none; background:transparent; color:var(--a-muted); cursor:pointer; padding:8px 15px; border-radius:9px; display:flex; align-items:center; gap:7px; transition:.15s; }
+  /* interactive app — premium dark card */
+  .app{ --a-bg:#0E0E16; --a-surface:#181824; --a-surface-2:#20202E; --a-ink:#F4F3ED; --a-muted:#9A9AAA; --a-line:rgba(244,243,237,0.12); --a-line-soft:rgba(244,243,237,0.055);
+    position:relative; isolation:isolate;
+    background:
+      radial-gradient(130% 90% at 12% -12%, rgba(139,123,255,0.20), transparent 55%),
+      radial-gradient(120% 80% at 108% -4%, rgba(240,86,46,0.12), transparent 52%),
+      var(--a-bg);
+    color:var(--a-ink); border-radius:26px; padding:22px;
+    box-shadow:0 1px 0 0 rgba(255,255,255,0.05) inset, 0 60px 120px -55px rgba(0,0,0,0.75), 0 0 0 1px var(--a-line-soft);
+    overflow:hidden; }
+  .app::before{ content:""; position:absolute; inset:0; border-radius:inherit; padding:1px; pointer-events:none; z-index:0;
+    background:linear-gradient(150deg, rgba(255,255,255,0.16), rgba(255,255,255,0) 42%);
+    -webkit-mask:linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); -webkit-mask-composite:xor; mask-composite:exclude; }
+  .app > *{ position:relative; z-index:1; }
+
+  .tabs{ position:relative; display:inline-flex; gap:2px; padding:4px; margin-bottom:18px; background:rgba(0,0,0,0.30); border:1px solid var(--a-line-soft); border-radius:13px; }
+  .tab{ position:relative; z-index:1; font-family:'Space Mono', monospace; font-size:11.5px; border:none; background:transparent; color:var(--a-muted); cursor:pointer; padding:9px 16px; border-radius:9px; display:flex; align-items:center; gap:7px; transition:color .22s ease; }
   .tab svg{ width:14px; height:14px; }
-  .tab.is-active{ background:var(--a-bg); color:var(--a-ink); box-shadow:0 1px 6px -2px #000; }
+  .tab.is-active{ color:#fff; }
+  .tab-ind{ position:absolute; top:4px; left:0; height:calc(100% - 8px); width:0; border-radius:9px; z-index:0;
+    background:linear-gradient(180deg, var(--a-surface-2), var(--a-surface)); box-shadow:0 3px 10px -3px #000, 0 0 0 1px var(--a-line-soft);
+    transition:transform .30s cubic-bezier(.34,1.3,.4,1), width .30s cubic-bezier(.34,1.3,.4,1); }
   .tab:focus-visible{ outline:2px solid var(--accent); outline-offset:2px; }
-  .deck{ background:var(--a-surface); border-radius:14px; padding:16px 18px; display:flex; flex-direction:column; gap:14px; }
-  .np-row{ display:flex; align-items:center; gap:14px; }
-  .cover{ width:54px; height:54px; border-radius:12px; flex-shrink:0; display:block; background:linear-gradient(140deg,var(--track),var(--track2)); box-shadow:0 8px 20px -10px var(--track); }
+
+  .deck{ position:relative; background:linear-gradient(180deg, var(--a-surface), rgba(20,20,30,0.66)); border:1px solid var(--a-line-soft); border-radius:20px; padding:18px 18px 17px; display:flex; flex-direction:column; gap:15px; box-shadow:0 20px 50px -40px #000; }
+  .np-row{ display:flex; align-items:center; gap:15px; }
+  .cover{ position:relative; width:66px; height:66px; border-radius:16px; flex-shrink:0; display:block; overflow:hidden;
+    background:linear-gradient(140deg,var(--track),var(--track2)); box-shadow:0 14px 30px -12px var(--track), 0 0 0 1px rgba(255,255,255,0.09) inset; }
+  .cover::after{ content:""; position:absolute; inset:0; background:linear-gradient(125deg, rgba(255,255,255,0.4), transparent 44%); mix-blend-mode:overlay; }
   .np-meta{ flex:1; min-width:0; }
-  .np-track{ font-weight:600; font-size:15px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
-  .np-artist{ color:var(--a-muted); font-size:13px; }
-  .np-badge{ font-family:'Space Mono', monospace; font-size:11px; letter-spacing:0.04em; color:var(--track); border:1px solid var(--track); border-radius:999px; padding:3px 9px; white-space:nowrap; }
-  canvas#eq{ width:100%; height:58px; display:block; }
-  .transport{ display:flex; align-items:center; gap:16px; }
-  .play{ width:56px; height:56px; border-radius:50%; border:none; cursor:pointer; flex-shrink:0; background:var(--accent); color:#fff; display:grid; place-items:center; transition:transform .12s ease; }
-  .play:hover{ transform:scale(1.06); }
-  .play:focus-visible{ outline:3px solid var(--accent); outline-offset:3px; }
-  .play svg{ width:22px; height:22px; }
-  .transport-meta{ flex:1; }
-  .t-label,.e-label{ font-size:11px; letter-spacing:0.08em; text-transform:uppercase; color:var(--a-muted); }
-  .timer{ font-size:22px; }
-  .earn-readout{ text-align:right; }
-  .earn-amt{ font-size:22px; color:var(--up); font-weight:700; line-height:1.1; }
+  .np-eyebrow{ display:flex; align-items:center; gap:6px; font-family:'Space Mono',monospace; font-size:9px; letter-spacing:0.22em; text-transform:uppercase; color:var(--a-muted); margin-bottom:4px; }
+  .np-eyebrow .live{ width:6px; height:6px; border-radius:50%; background:var(--a-muted); flex-shrink:0; }
+  .app.playing .np-eyebrow .live{ background:var(--up); animation:pulse-live 1.6s ease-out infinite; }
+  @keyframes pulse-live{ 0%{ box-shadow:0 0 0 0 rgba(63,214,158,0.55);} 100%{ box-shadow:0 0 0 7px rgba(63,214,158,0);} }
+  .np-track{ font-family:'Bricolage Grotesque', sans-serif; font-weight:700; font-size:17px; letter-spacing:-0.012em; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  .np-artist{ color:var(--a-muted); font-size:12.5px; }
+  .np-badge{ display:inline-flex; align-items:center; gap:5px; font-family:'Space Mono', monospace; font-size:11px; font-weight:700; letter-spacing:0.02em; color:var(--track); border:1px solid var(--track); border-radius:999px; padding:4px 11px; white-space:nowrap; background:rgba(255,255,255,0.03); box-shadow:0 0 18px -8px var(--track); }
+  canvas#eq{ width:100%; height:52px; display:block; }
+
+  .scrubber{ display:flex; align-items:center; gap:11px; }
+  .scrub-time{ font-family:'Space Mono',monospace; font-size:10.5px; color:var(--a-muted); width:32px; flex-shrink:0; }
+  .scrub-time.r{ text-align:right; }
+  .scrub-bar{ position:relative; flex:1; height:5px; border-radius:999px; background:rgba(255,255,255,0.09); }
+  .scrub-fill{ position:relative; height:100%; width:0%; border-radius:999px; background:linear-gradient(90deg, var(--track), var(--track2)); transition:width .18s linear; }
+  .scrub-knob{ position:absolute; right:-4px; top:50%; width:10px; height:10px; border-radius:50%; background:#fff; transform:translateY(-50%); box-shadow:0 2px 6px -1px #000, 0 0 0 3px color-mix(in srgb, var(--track) 40%, transparent); opacity:0; transition:opacity .2s; }
+  .app.playing .scrub-knob{ opacity:1; }
+
+  .ctrl-row{ display:flex; align-items:center; gap:16px; }
+  .transport{ display:flex; align-items:center; gap:12px; }
+  .t-nav{ width:40px; height:40px; border-radius:50%; border:1px solid var(--a-line); background:rgba(255,255,255,0.03); color:var(--a-ink); display:grid; place-items:center; cursor:pointer; flex-shrink:0; transition:background .15s ease, transform .12s ease; }
+  .t-nav:hover{ background:rgba(255,255,255,0.10); transform:translateY(-1px); }
+  .t-nav:focus-visible{ outline:2px solid var(--accent); outline-offset:2px; }
+  .t-nav svg{ width:15px; height:15px; }
+  .play{ width:60px; height:60px; border-radius:50%; border:none; cursor:pointer; flex-shrink:0; background:linear-gradient(180deg, #5646FF, #3B2BE0); color:#fff; display:grid; place-items:center; box-shadow:0 14px 30px -10px rgba(59,43,224,0.7), 0 0 0 1px rgba(255,255,255,0.14) inset; transition:transform .14s ease, box-shadow .22s ease; }
+  .play:hover{ transform:scale(1.05); box-shadow:0 18px 38px -10px rgba(59,43,224,0.9), 0 0 0 1px rgba(255,255,255,0.18) inset; }
+  .play:focus-visible{ outline:3px solid #fff; outline-offset:3px; }
+  .play svg{ width:23px; height:23px; }
+  .stat{ text-align:left; }
+  .t-label,.e-label{ font-size:9px; letter-spacing:0.16em; text-transform:uppercase; color:var(--a-muted); }
+  .timer{ font-size:20px; letter-spacing:-0.01em; }
+  .earn-readout{ margin-left:auto; text-align:right; }
+  .earn-amt{ font-size:22px; color:var(--up); font-weight:700; line-height:1.1; letter-spacing:-0.01em; transition:transform .12s ease; }
+  .app.tick .earn-amt{ transform:scale(1.05); }
   .earn-amt .unit{ font-size:12px; color:var(--a-muted); font-weight:400; }
   .earn-fiat{ font-size:12px; color:var(--a-muted); margin-top:2px; }
-  @media (max-width:520px){ .earn-readout{ text-align:left; } .transport{ flex-wrap:wrap; } }
+  @media (max-width:520px){ .ctrl-row{ flex-wrap:wrap; gap:12px; } .earn-readout{ margin-left:0; text-align:left; } }
   .app-note{ font-size:11px; color:var(--a-muted); margin:12px 2px 0; }
   .lib{ display:flex; flex-direction:column; gap:6px; max-height:330px; overflow-y:auto; }
   .track{ display:flex; align-items:center; gap:13px; width:100%; text-align:left; font-family:inherit; color:var(--a-ink); background:var(--a-surface); border:1px solid var(--a-line-soft); border-radius:12px; padding:10px 12px; cursor:pointer; transition:.12s; }
@@ -149,11 +186,14 @@
   .band p.big{ font-size:19px; color:var(--ink-soft); max-width:56ch; margin:0; }
 
   .pay-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:14px; margin-top:44px; }
-  .pay-card{ display:flex; align-items:center; gap:12px; background:var(--paper); border:1px solid var(--line); border-radius:14px; padding:16px 18px; }
+  .pay-card{ display:flex; align-items:center; gap:11px; min-width:0; background:var(--paper); border:1px solid var(--line); border-radius:14px; padding:16px 18px; }
   .pay-song{ flex:1; min-width:0; font-weight:600; font-size:15px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
   .pay-arrow{ color:var(--ink-soft); }
   .pay-ticker{ font-family:'Space Mono', monospace; font-weight:700; font-size:14px; color:var(--accent); }
-  .pay-est{ font-size:11px; color:var(--ink-soft); margin-left:auto; }
+  .pay-est{ font-size:11px; color:var(--ink-soft); margin-left:0; white-space:nowrap; }
+  .pay-spark{ width:58px; height:22px; flex-shrink:0; color:var(--up); overflow:visible; }
+  .pay-spark .sp-line{ fill:none; stroke:currentColor; stroke-width:1.6; stroke-linejoin:round; stroke-linecap:round; vector-effect:non-scaling-stroke; }
+  .pay-spark .sp-area{ fill:currentColor; opacity:0.13; stroke:none; }
   .pay-card.magnetic{ transition:transform .18s cubic-bezier(.2,.7,.2,1), box-shadow .18s ease, border-color .18s ease; will-change:transform; }
   .pay-card.magnetic:hover{ border-color:var(--accent); box-shadow:0 18px 40px -26px var(--shadow); }
   @media (max-width:760px){ .pay-grid{ grid-template-columns:1fr; } }
@@ -209,6 +249,18 @@
     .aurora span{ animation:none; }
   }
 
+  /* ---- premium: grain texture overlay ---- */
+  body::after{ content:""; position:fixed; inset:0; z-index:9998; pointer-events:none; opacity:0.035;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"); }
+  @media (prefers-color-scheme: dark){ :root:not([data-theme="light"]) body::after{ opacity:0.05; } }
+  :root[data-theme="dark"] body::after{ opacity:0.05; }
+
+  /* ---- premium: sticky nav with blur ---- */
+  .nav{ position:sticky; top:0; z-index:60; margin:0 -10px; padding-left:10px; padding-right:10px;
+    transition:background .3s ease, box-shadow .3s ease, backdrop-filter .3s ease, padding .3s ease; }
+  .nav.scrolled{ background:color-mix(in srgb, var(--bg) 78%, transparent); backdrop-filter:blur(14px) saturate(1.3); -webkit-backdrop-filter:blur(14px) saturate(1.3);
+    box-shadow:0 1px 0 var(--line-soft), 0 18px 40px -34px var(--shadow); padding-top:16px; padding-bottom:16px; }
+
   /* ---- hover feedback on buttons (shadow + shade) ---- */
   .pill{ box-shadow:0 6px 18px -13px var(--shadow); }
   .pill:hover{ box-shadow:0 18px 34px -16px var(--shadow); }
@@ -227,7 +279,7 @@
   .ca-copy:focus-visible,.wd-btn:focus-visible,.pill:focus-visible{ outline:2px solid var(--accent); outline-offset:2px; }
 
   /* ---- animated hero background (aurora) ---- */
-  .hero{ position:relative; }
+  .hero{ position:relative; overflow-x:clip; }
   .hero-col,.hero .app{ position:relative; z-index:1; }
   .aurora{ position:absolute; inset:-14% -18%; z-index:0; pointer-events:none; overflow:hidden; filter:blur(64px); opacity:.75; }
   .aurora span{ position:absolute; display:block; border-radius:50%; mix-blend-mode:multiply; opacity:.5; animation:float-a 20s ease-in-out infinite; }
@@ -316,26 +368,37 @@
         <button class="tab is-active" id="tabPlayer" role="tab" aria-selected="true" aria-controls="panelPlayer"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>Player</button>
         <button class="tab" id="tabLibrary" role="tab" aria-selected="false" aria-controls="panelLibrary"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M4 6h16v2H4zM4 11h16v2H4zM4 16h10v2H4z"/></svg>Library</button>
         <button class="tab" id="tabWallet" role="tab" aria-selected="false" aria-controls="panelWallet"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M3 6a2 2 0 0 1 2-2h12v3H5a1 1 0 0 0 0 2h14a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V6zm14 8.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z"/></svg>Wallet</button>
+        <span class="tab-ind" id="tabInd" aria-hidden="true"></span>
       </div>
       <div class="panel" id="panelPlayer" role="tabpanel" aria-labelledby="tabPlayer">
         <div class="deck">
           <div class="np-row">
             <span class="cover" id="cover" aria-hidden="true"></span>
             <div class="np-meta">
+              <div class="np-eyebrow"><span class="live"></span><span id="npState">Paused</span></div>
               <div class="np-track" id="npTrack">—</div>
               <div class="np-artist" id="npArtist">—</div>
             </div>
-            <span class="np-badge" id="npReward">→ AAPL</span>
+            <span class="np-badge" id="npReward">AAPL</span>
           </div>
           <canvas id="eq" aria-hidden="true"></canvas>
-          <div class="transport">
-            <button class="play" id="playBtn" aria-label="Play"><svg id="playIcon" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></button>
-            <div class="transport-meta">
-              <div class="t-label">Session time</div>
+          <div class="scrubber">
+            <span class="scrub-time mono" id="scrubCur">0:00</span>
+            <div class="scrub-bar"><div class="scrub-fill" id="scrubFill"><span class="scrub-knob"></span></div></div>
+            <span class="scrub-time r mono" id="scrubDur">0:00</span>
+          </div>
+          <div class="ctrl-row">
+            <div class="transport">
+              <button class="t-nav" id="prevBtn" type="button" aria-label="Previous track"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 6h2v12H7zm3 6 9 6V6z"/></svg></button>
+              <button class="play" id="playBtn" aria-label="Play"><svg id="playIcon" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></button>
+              <button class="t-nav" id="nextBtn" type="button" aria-label="Next track"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M15 6h2v12h-2zM5 18l9-6-9-6z"/></svg></button>
+            </div>
+            <div class="stat">
+              <div class="t-label">Session</div>
               <div class="timer mono" id="timer">00:00</div>
             </div>
             <div class="earn-readout">
-              <div class="e-label">Earned this session</div>
+              <div class="e-label">Earned</div>
               <div class="earn-amt mono"><span id="earned">0.0</span> <span class="unit" id="earnedUnit">AAPL</span></div>
               <div class="earn-fiat mono" id="earnedFiat">≈ $0.00</div>
             </div>
@@ -467,7 +530,7 @@ $ grep -rE "privateKey|custody" src/   <span class="ok"># no matches — Encore 
 
   <footer>
     <span>ENCORE — LISTEN. EARN. REPEAT.</span>
-    <span class="mono">BUILD · v0.7</span>
+    <span class="mono">BUILD · v0.8</span>
   </footer>
 </div>
 
@@ -523,15 +586,19 @@ $ grep -rE "privateKey|custody" src/   <span class="ok"># no matches — Encore 
   })();
 
   var el = function(id){ return document.getElementById(id); };
-  var playBtn = el('playBtn'), playIcon = el('playIcon');
+  var appEl = document.querySelector('.app');
+  var playBtn = el('playBtn'), playIcon = el('playIcon'), prevBtn = el('prevBtn'), nextBtn = el('nextBtn');
   var timerEl = el('timer'), earnedEl = el('earned'), earnedFiatEl = el('earnedFiat');
   var earnedUnit = el('earnedUnit'), npReward = el('npReward'), payGrid = el('payGrid');
-  var npTrack = el('npTrack'), npArtist = el('npArtist'), cover = el('cover');
+  var npTrack = el('npTrack'), npArtist = el('npArtist'), cover = el('cover'), npState = el('npState');
+  var scrubFill = el('scrubFill'), scrubCur = el('scrubCur'), scrubDur = el('scrubDur'), tabInd = el('tabInd');
   var canvas = el('eq'), ctx = canvas.getContext('2d');
   var lib = el('lib');
   var root = document.documentElement;
 
-  var playing = false, current = -1;
+  var playing = false, current = -1, trackSec = 0;
+  function durSec(tr){ if(!tr || !tr.dur) return 195; var p = String(tr.dur).split(':'); var s = (+p[0]||0)*60 + (+p[1]||0); return s>0 ? s : 195; }
+  function fmtClock(s){ s=Math.max(0,Math.floor(s)); var m=Math.floor(s/60); return m+':'+((s%60)<10?'0':'')+(s%60); }
   var RATE = 0.0000009259, SOL_USD = 150;   // RATE*SOL_USD*3600 ≈ $0.50 / listening hour (2h/day ≈ $1/day)
   var balances = {}, lastBalTs = 0;         // per-ticker $ accrued this session
   // illustrative reference prices (USD) so each stock token shows a realistic fractional amount
@@ -650,22 +717,38 @@ $ grep -rE "privateKey|custody" src/   <span class="ok"># no matches — Encore 
     b.addEventListener('click', function(){ selectTrack(i); showPanel('player'); });
     lib.appendChild(b);
   });
-  if(payGrid){ TRACKS.forEach(function(tr){
+  function sparkline(seed, up){
+    var n = 12, w = 68, h = 22, r = (seed*9301+49297)%233280, pts = [], v = 0.5;
+    for(var i=0;i<n;i++){ r = (r*9301+49297)%233280; var rnd = r/233280; v += (rnd-0.5)*0.34 + up*0.055; v = Math.max(0.08, Math.min(0.92, v));
+      pts.push([ (i/(n-1))*w, h - v*h ]); }
+    var d = 'M' + pts.map(function(p){ return p[0].toFixed(1)+','+p[1].toFixed(1); }).join(' L');
+    var area = d + ' L'+w+','+h+' L0,'+h+' Z';
+    return '<svg class="pay-spark" viewBox="0 0 '+w+' '+h+'" preserveAspectRatio="none" aria-hidden="true">' +
+      '<path class="sp-area" d="'+area+'"/><path class="sp-line" d="'+d+'"/></svg>';
+  }
+  if(payGrid){ TRACKS.forEach(function(tr, i){
     var d = document.createElement('div'); d.className='pay-card magnetic';
-    d.innerHTML = '<span class="pay-song">'+(tr.title||'Track')+'</span><span class="pay-arrow">→</span><span class="pay-ticker">'+tr.ticker+'</span><span class="pay-est mono">≈ '+compact(USD_PER_HR/priceOf(tr.ticker))+'/h</span>';
+    d.innerHTML = '<span class="pay-song">'+(tr.title||'Track')+'</span>' + sparkline(i+3, 1) +
+      '<span class="pay-ticker">'+tr.ticker+'</span><span class="pay-est mono">≈ '+compact(USD_PER_HR/priceOf(tr.ticker))+'/h</span>';
     payGrid.appendChild(d);
   }); }
 
   function selectTrack(i){
-    current = i; var tr = TRACKS[i];
-    npTrack.textContent = tr.artist ? (tr.title + ' — ' + tr.artist) : tr.title; npArtist.textContent = 'partnered release';
-    if(npReward) npReward.textContent = '→ ' + tr.ticker;
+    current = i; var tr = TRACKS[i]; trackSec = 0;
+    npTrack.textContent = tr.title; npArtist.textContent = tr.artist || 'partnered release';
+    if(npReward) npReward.textContent = tr.ticker;
     if(earnedUnit) earnedUnit.textContent = tr.ticker;
     root.style.setProperty('--track', tr.c1); root.style.setProperty('--track2', tr.c2);
     cover.style.background = 'linear-gradient(140deg,'+tr.c1+','+tr.c2+')';
+    if(scrubDur) scrubDur.textContent = fmtClock(durSec(tr));
+    if(scrubCur) scrubCur.textContent = '0:00';
+    if(scrubFill) scrubFill.style.width = '0%';
     Array.prototype.forEach.call(lib.children, function(c, ci){ c.classList.toggle('is-current', ci===i); });
     if(audioActive){ route(tr); }
   }
+  function step(dir){ if(!TRACKS.length) return; var n = ((current + dir) % TRACKS.length + TRACKS.length) % TRACKS.length; selectTrack(n); showPanel('player'); }
+  if(prevBtn) prevBtn.addEventListener('click', function(){ step(-1); });
+  if(nextBtn) nextBtn.addEventListener('click', function(){ step(1); });
 
   var tabPlayer = el('tabPlayer'), tabLibrary = el('tabLibrary'), tabWallet = el('tabWallet');
   var panelPlayer = el('panelPlayer'), panelLibrary = el('panelLibrary'), panelWallet = el('panelWallet');
@@ -675,12 +758,22 @@ $ grep -rE "privateKey|custody" src/   <span class="ok"># no matches — Encore 
     { t:tabLibrary, p:panelLibrary, k:'library' },
     { t:tabWallet,  p:panelWallet,  k:'wallet' }
   ];
+  function positionTabInd(){
+    if(!tabInd) return; var active = null;
+    TABS.forEach(function(o){ if(o.t.classList.contains('is-active')) active = o.t; });
+    if(!active) return;
+    tabInd.style.width = active.offsetWidth + 'px';
+    tabInd.style.transform = 'translateX(' + active.offsetLeft + 'px)';
+  }
   function showPanel(which){
     TABS.forEach(function(o){ var on = o.k===which; o.p.hidden = !on; o.t.classList.toggle('is-active', on); o.t.setAttribute('aria-selected', on); });
     if(which==='player') sizeCanvas();
     if(which==='wallet') renderBalances();
+    positionTabInd();
   }
   TABS.forEach(function(o){ o.t.addEventListener('click', function(){ showPanel(o.k); }); });
+  window.addEventListener('resize', positionTabInd);
+  if(document.fonts && document.fonts.ready){ document.fonts.ready.then(positionTabInd); }
 
   function tickerColor(tk){ var h=0; for(var i=0;i<tk.length;i++){ h=(h*31+tk.charCodeAt(i))%360; } return 'hsl('+h+' 62% 52%)'; }
   function renderBalances(){
@@ -729,14 +822,21 @@ $ grep -rE "privateKey|custody" src/   <span class="ok"># no matches — Encore 
   function accrue(){
     if(!playing || current<0){ lastBalTs = 0; return; }
     var now = performance.now();
-    if(lastBalTs){ var d = (now-lastBalTs)/1000; if(d>0){ var tk = TRACKS[current].ticker; balances[tk] = (balances[tk]||0) + d*RATE*SOL_USD; } }
+    if(lastBalTs){ var d = (now-lastBalTs)/1000; if(d>0){ var tk = TRACKS[current].ticker; balances[tk] = (balances[tk]||0) + d*RATE*SOL_USD; trackSec += d; } }
     lastBalTs = now;
+  }
+  function updateScrubber(){
+    if(!scrubFill || current<0) return;
+    var dur = durSec(TRACKS[current]), pos = trackSec % dur;
+    scrubFill.style.width = ((pos/dur)*100).toFixed(2) + '%';
+    if(scrubCur) scrubCur.textContent = fmtClock(pos);
   }
   function frame(ts){
     requestAnimationFrame(frame);
     try{ accrue();
       if(playing && ts - lastDraw > 80){ var s = elapsed(); timerEl.textContent = fmtTime(s);
         var usd = s * RATE * SOL_USD; earnedEl.textContent = fmtTokens(usd / priceOf(TRACKS[current].ticker)); earnedFiatEl.textContent = '≈ $' + formatFiat(usd); lastDraw = ts;
+        updateScrubber();
         if(!panelWallet.hidden) renderBalances(); }
       drawEq(ts); }catch(err){}
   }
@@ -744,6 +844,8 @@ $ grep -rE "privateKey|custody" src/   <span class="ok"># no matches — Encore 
     if(playing){ accumSec += (performance.now() - lastResume)/1000; playing = false; stopAudio(); }
     else { lastResume = performance.now(); playing = true; startAudio(); }
     window.__encore.playing = playing;
+    if(appEl) appEl.classList.toggle('playing', playing);
+    if(npState) npState.textContent = playing ? 'Now playing' : 'Paused';
     playIcon.querySelector('path').setAttribute('d', playing ? PAUSE_PATH : PLAY_PATH);
     playBtn.setAttribute('aria-label', playing ? 'Pause' : 'Play');
   }
@@ -774,7 +876,7 @@ $ grep -rE "privateKey|custody" src/   <span class="ok"># no matches — Encore 
   wdConnect.addEventListener('click', function(){ showStatus('Wallet connect opens at launch.'); });
   setInterval(function(){ if(!wdPanel.hidden) refreshWithdraw(); }, 300);
 
-  selectTrack(0); sizeCanvas(); requestAnimationFrame(frame);
+  selectTrack(0); sizeCanvas(); positionTabInd(); requestAnimationFrame(frame);
 })();
 </script>
 
@@ -855,6 +957,14 @@ $ grep -rE "privateKey|custody" src/   <span class="ok"># no matches — Encore 
     items.push('<span class="fi">▲ <span class="amt">'+amt+'</span> <span class="tk">'+t[0]+'</span> · $'+usd.toFixed(2)+'</span>');
   }
   track.innerHTML = items.join('') + items.join('');   // duplicate for seamless loop
+})();
+
+/* ===== sticky nav — blur backdrop on scroll ===== */
+(function(){
+  var nav = document.querySelector('.nav'); if(!nav) return;
+  var on = false;
+  function upd(){ var s = window.pageYOffset > 12; if(s !== on){ on = s; nav.classList.toggle('scrolled', s); } }
+  window.addEventListener('scroll', upd, { passive:true }); upd();
 })();
 
 /* ===== magnetic hover (elements follow the cursor) ===== */
