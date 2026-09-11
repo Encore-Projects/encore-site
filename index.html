@@ -137,6 +137,12 @@
   .earn-amt .unit{ font-size:12px; color:var(--a-muted); font-weight:400; }
   .earn-fiat{ font-size:12px; color:var(--a-muted); margin-top:2px; }
   @media (max-width:520px){ .ctrl-row{ flex-wrap:wrap; gap:12px; } .earn-readout{ margin-left:0; text-align:left; } }
+  .deck-foot{ display:flex; align-items:center; gap:14px; margin-top:2px; padding-top:13px; border-top:1px solid var(--a-line-soft); }
+  .vol{ display:flex; align-items:center; gap:8px; color:var(--a-muted); flex-shrink:0; }
+  .vol svg{ width:16px; height:16px; }
+  .vol-range{ width:78px; height:4px; margin:0; accent-color:var(--track); cursor:pointer; }
+  .upnext{ margin-left:auto; display:flex; align-items:center; gap:5px; font-size:11.5px; color:var(--a-muted); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; min-width:0; }
+  .upnext strong{ color:var(--a-ink); font-weight:600; }
   .app-note{ font-size:11px; color:var(--a-muted); margin:12px 2px 0; }
   .lib{ display:flex; flex-direction:column; gap:6px; max-height:330px; overflow-y:auto; }
   .track{ display:flex; align-items:center; gap:13px; width:100%; text-align:left; font-family:inherit; color:var(--a-ink); background:var(--a-surface); border:1px solid var(--a-line-soft); border-radius:12px; padding:10px 12px; cursor:pointer; transition:.12s; }
@@ -197,6 +203,7 @@
   .pay-card.magnetic{ transition:transform .18s cubic-bezier(.2,.7,.2,1), box-shadow .18s ease, border-color .18s ease; will-change:transform; }
   .pay-card.magnetic:hover{ border-color:var(--accent); box-shadow:0 18px 40px -26px var(--shadow); }
   @media (max-width:760px){ .pay-grid{ grid-template-columns:1fr; } }
+  @media (max-width:560px){ .pay-spark{ display:none; } .pay-card{ gap:9px; padding:14px 15px; } .pay-est{ font-size:10px; } }
 
   /* earnings calculator */
   .calc{ background:var(--paper); border:1px solid var(--line); border-radius:18px; padding:26px 28px; margin-top:36px; max-width:720px; }
@@ -279,9 +286,9 @@
   .ca-copy:focus-visible,.wd-btn:focus-visible,.pill:focus-visible{ outline:2px solid var(--accent); outline-offset:2px; }
 
   /* ---- animated hero background (aurora) ---- */
-  .hero{ position:relative; overflow-x:clip; }
+  .hero{ position:relative; }
   .hero-col,.hero .app{ position:relative; z-index:1; }
-  .aurora{ position:absolute; inset:-14% -18%; z-index:0; pointer-events:none; overflow:hidden; filter:blur(64px); opacity:.75; }
+  .aurora{ position:absolute; inset:-16% -2%; z-index:0; pointer-events:none; overflow:hidden; filter:blur(64px); opacity:.75; }
   .aurora span{ position:absolute; display:block; border-radius:50%; mix-blend-mode:multiply; opacity:.5; animation:float-a 20s ease-in-out infinite; }
   .aurora .b1{ width:520px; height:520px; left:-4%; top:-20%; background:radial-gradient(circle,#8B7BFF,transparent 62%); }
   .aurora .b2{ width:440px; height:440px; right:0; top:4%; background:radial-gradient(circle,#F0562E,transparent 62%); animation-duration:24s; animation-delay:-5s; }
@@ -292,10 +299,10 @@
 
   /* ---- floating brand logos that dodge the cursor ---- */
   .orbits{ position:absolute; inset:0; z-index:0; pointer-events:none; }
-  .orbit{ position:absolute; width:var(--s,58px); height:var(--s,58px); opacity:.15; will-change:transform; }
+  .orbit{ position:absolute; width:var(--s,58px); height:var(--s,58px); opacity:.19; will-change:transform; }
   .orbit svg{ width:100%; height:100%; display:block; }
-  @media (prefers-color-scheme: dark){ :root:not([data-theme="light"]) .orbit{ opacity:.24; } }
-  :root[data-theme="dark"] .orbit{ opacity:.24; }
+  @media (prefers-color-scheme: dark){ :root:not([data-theme="light"]) .orbit{ opacity:.28; } }
+  :root[data-theme="dark"] .orbit{ opacity:.28; }
   @media (max-width:900px){ .orbits{ display:none; } }
 
   /* ---- sample rewards feed ---- */
@@ -320,6 +327,21 @@
   .bal-total{ display:flex; justify-content:space-between; align-items:baseline; margin-top:8px; padding-top:12px; border-top:1px dashed var(--a-line); }
   .bal-total span:first-child{ font-weight:600; }
   .bal-total .mono{ color:var(--up); font-weight:700; font-size:16px; }
+
+  /* ---- stock/company logos ---- */
+  .tlogo{ display:inline-flex; align-items:center; justify-content:center; width:16px; height:16px; flex-shrink:0; vertical-align:-3px; }
+  .tlogo svg{ width:100%; height:100%; display:block; }
+  .np-badge .tlogo{ width:15px; height:15px; vertical-align:middle; }
+  .t-badge .tlogo{ width:13px; height:13px; }
+  .pay-ticker{ display:inline-flex; align-items:center; gap:6px; }
+  .pay-ticker .tlogo{ width:17px; height:17px; }
+  .bal-logo{ width:32px; height:32px; border-radius:9px; flex-shrink:0; display:grid; place-items:center; background:rgba(255,255,255,0.05); border:1px solid var(--a-line-soft); }
+  .bal-logo .tlogo{ width:20px; height:20px; }
+  .marquee-track .tlogo{ width:22px; height:22px; vertical-align:-5px; }
+  .feed-track .tlogo{ width:14px; height:14px; }
+  .lede .tlogo{ width:16px; height:16px; vertical-align:-3px; margin:0 1px; }
+  .cover-logo{ position:absolute; right:-6px; bottom:-6px; width:28px; height:28px; border-radius:9px; background:var(--a-bg); border:1px solid var(--a-line); display:grid; place-items:center; box-shadow:0 6px 14px -6px #000; }
+  .cover-logo .tlogo{ width:17px; height:17px; }
 </style>
 </head>
 <body>
@@ -342,17 +364,17 @@
   <section class="hero" id="top">
     <div class="aurora" aria-hidden="true"><span class="b1"></span><span class="b2"></span><span class="b3"></span></div>
     <div class="orbits" aria-hidden="true">
-      <div class="orbit" style="left:2%;  top:8%;  --s:64px; color:#14141C;"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 .5C5.37.5 0 5.87 0 12.5c0 5.3 3.44 9.8 8.21 11.39.6.11.82-.26.82-.58 0-.29-.01-1.05-.02-2.06-3.34.73-4.04-1.61-4.04-1.61-.55-1.39-1.34-1.76-1.34-1.76-1.09-.75.08-.73.08-.73 1.21.09 1.85 1.24 1.85 1.24 1.07 1.84 2.81 1.31 3.5 1 .11-.78.42-1.31.76-1.61-2.67-.3-5.47-1.34-5.47-5.95 0-1.31.47-2.38 1.24-3.22-.12-.31-.54-1.52.12-3.18 0 0 1.01-.32 3.3 1.23a11.5 11.5 0 0 1 6 0c2.29-1.55 3.3-1.23 3.3-1.23.66 1.66.24 2.87.12 3.18.77.84 1.24 1.91 1.24 3.22 0 4.62-2.81 5.64-5.49 5.94.43.37.81 1.1.81 2.22 0 1.6-.01 2.9-.01 3.29 0 .32.22.7.83.58C20.56 22.29 24 17.79 24 12.5 24 5.87 18.63.5 12 .5z"/></svg></div>
-      <div class="orbit" style="left:40%; top:2%;  --s:52px; color:#1DB954;"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm4.59 14.43a.62.62 0 0 1-.86.21c-2.35-1.44-5.3-1.76-8.79-.96a.62.62 0 1 1-.28-1.21c3.81-.87 7.08-.5 9.72 1.11.29.18.39.57.21.85zm1.22-2.72a.78.78 0 0 1-1.07.26c-2.69-1.65-6.79-2.13-9.97-1.17a.78.78 0 1 1-.45-1.49c3.63-1.1 8.15-.56 11.24 1.33.37.22.49.71.25 1.07zm.11-2.84C14.7 8.99 9.39 8.82 6.4 9.73a.94.94 0 1 1-.54-1.8c3.43-1.04 9.29-.84 12.95 1.33a.94.94 0 0 1-.96 1.61z"/></svg></div>
-      <div class="orbit" style="left:8%;  top:62%; --s:50px; color:#627EEA;"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2 5 12.3 12 16.2 19 12.3 12 2zM5 13.7 12 22l7-8.3-7 3.9-7-3.9z"/></svg></div>
-      <div class="orbit" style="left:52%; top:70%; --s:58px; color:#00C805;"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M6.5 21c-.4-6.6 3.2-13 12-16.8-1.3 5.6-2.6 9-4.9 11.2 1.1.1 2.3-.1 3.6-.7-1.9 2.8-4.4 4.3-6.9 4.3-.7 1-1.1 1.9-1.2 3H6.5z"/></svg></div>
-      <div class="orbit" style="left:88%; top:44%; --s:46px; color:#627EEA;"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2 5 12.3 12 16.2 19 12.3 12 2zM5 13.7 12 22l7-8.3-7 3.9-7-3.9z"/></svg></div>
-      <div class="orbit" style="left:70%; top:20%; --s:44px; color:#14141C;"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 .5C5.37.5 0 5.87 0 12.5c0 5.3 3.44 9.8 8.21 11.39.6.11.82-.26.82-.58 0-.29-.01-1.05-.02-2.06-3.34.73-4.04-1.61-4.04-1.61-.55-1.39-1.34-1.76-1.34-1.76-1.09-.75.08-.73.08-.73 1.21.09 1.85 1.24 1.85 1.24 1.07 1.84 2.81 1.31 3.5 1 .11-.78.42-1.31.76-1.61-2.67-.3-5.47-1.34-5.47-5.95 0-1.31.47-2.38 1.24-3.22-.12-.31-.54-1.52.12-3.18 0 0 1.01-.32 3.3 1.23a11.5 11.5 0 0 1 6 0c2.29-1.55 3.3-1.23 3.3-1.23.66 1.66.24 2.87.12 3.18.77.84 1.24 1.91 1.24 3.22 0 4.62-2.81 5.64-5.49 5.94.43.37.81 1.1.81 2.22 0 1.6-.01 2.9-.01 3.29 0 .32.22.7.83.58C20.56 22.29 24 17.79 24 12.5 24 5.87 18.63.5 12 .5z"/></svg></div>
+      <div class="orbit" style="left:1%;  top:5%;  --s:58px; color:#14141C;"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 .5C5.37.5 0 5.87 0 12.5c0 5.3 3.44 9.8 8.21 11.39.6.11.82-.26.82-.58 0-.29-.01-1.05-.02-2.06-3.34.73-4.04-1.61-4.04-1.61-.55-1.39-1.34-1.76-1.34-1.76-1.09-.75.08-.73.08-.73 1.21.09 1.85 1.24 1.85 1.24 1.07 1.84 2.81 1.31 3.5 1 .11-.78.42-1.31.76-1.61-2.67-.3-5.47-1.34-5.47-5.95 0-1.31.47-2.38 1.24-3.22-.12-.31-.54-1.52.12-3.18 0 0 1.01-.32 3.3 1.23a11.5 11.5 0 0 1 6 0c2.29-1.55 3.3-1.23 3.3-1.23.66 1.66.24 2.87.12 3.18.77.84 1.24 1.91 1.24 3.22 0 4.62-2.81 5.64-5.49 5.94.43.37.81 1.1.81 2.22 0 1.6-.01 2.9-.01 3.29 0 .32.22.7.83.58C20.56 22.29 24 17.79 24 12.5 24 5.87 18.63.5 12 .5z"/></svg></div>
+      <div class="orbit" style="left:42%; top:4%;  --s:50px; color:#1DB954;"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm4.59 14.43a.62.62 0 0 1-.86.21c-2.35-1.44-5.3-1.76-8.79-.96a.62.62 0 1 1-.28-1.21c3.81-.87 7.08-.5 9.72 1.11.29.18.39.57.21.85zm1.22-2.72a.78.78 0 0 1-1.07.26c-2.69-1.65-6.79-2.13-9.97-1.17a.78.78 0 1 1-.45-1.49c3.63-1.1 8.15-.56 11.24 1.33.37.22.49.71.25 1.07zm.11-2.84C14.7 8.99 9.39 8.82 6.4 9.73a.94.94 0 1 1-.54-1.8c3.43-1.04 9.29-.84 12.95 1.33a.94.94 0 0 1-.96 1.61z"/></svg></div>
+      <div class="orbit" style="left:2%;  top:58%; --s:48px; color:#627EEA;"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2 5 12.3 12 16.2 19 12.3 12 2zM5 13.7 12 22l7-8.3-7 3.9-7-3.9z"/></svg></div>
+      <div class="orbit" style="left:15%; top:85%; --s:54px; color:#00C805;"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M6.5 21c-.4-6.6 3.2-13 12-16.8-1.3 5.6-2.6 9-4.9 11.2 1.1.1 2.3-.1 3.6-.7-1.9 2.8-4.4 4.3-6.9 4.3-.7 1-1.1 1.9-1.2 3H6.5z"/></svg></div>
+      <div class="orbit" style="left:46%; top:33%; --s:42px; color:#627EEA;"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2 5 12.3 12 16.2 19 12.3 12 2zM5 13.7 12 22l7-8.3-7 3.9-7-3.9z"/></svg></div>
+      <div class="orbit" style="left:37%; top:88%; --s:44px; color:#14141C;"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 .5C5.37.5 0 5.87 0 12.5c0 5.3 3.44 9.8 8.21 11.39.6.11.82-.26.82-.58 0-.29-.01-1.05-.02-2.06-3.34.73-4.04-1.61-4.04-1.61-.55-1.39-1.34-1.76-1.34-1.76-1.09-.75.08-.73.08-.73 1.21.09 1.85 1.24 1.85 1.24 1.07 1.84 2.81 1.31 3.5 1 .11-.78.42-1.31.76-1.61-2.67-.3-5.47-1.34-5.47-5.95 0-1.31.47-2.38 1.24-3.22-.12-.31-.54-1.52.12-3.18 0 0 1.01-.32 3.3 1.23a11.5 11.5 0 0 1 6 0c2.29-1.55 3.3-1.23 3.3-1.23.66 1.66.24 2.87.12 3.18.77.84 1.24 1.91 1.24 3.22 0 4.62-2.81 5.64-5.49 5.94.43.37.81 1.1.81 2.22 0 1.6-.01 2.9-.01 3.29 0 .32.22.7.83.58C20.56 22.29 24 17.79 24 12.5 24 5.87 18.63.5 12 .5z"/></svg></div>
     </div>
     <div class="hero-col">
       <p class="eyebrow">Listen-to-earn · Robinhood Chain</p>
       <h1 class="hero-title">Press play<span class="dot">.</span><br><em>Earn the stock</em><span class="dot">.</span></h1>
-      <p class="lede">Stream partnered tracks through Encore and every play drops <strong>stock tokens</strong> — AAPL, NVDA, META — into your wallet. Built on Robinhood Chain. Non-custodial, and open source so you can check.</p>
+      <p class="lede">Stream partnered tracks through Encore and every play drops <strong>stock tokens</strong> — <span data-tk="AAPL">AAPL</span>, <span data-tk="NVDA">NVDA</span>, <span data-tk="META">META</span> — into your wallet. Built on Robinhood Chain. Non-custodial, and open source so you can check.</p>
       <div class="hero-cta">
         <a class="pill pill-dark" href="https://x.com/Encore_Projects" target="_blank" rel="noopener">Get early access →</a>
         <a class="pill pill-ghost" href="#source">Read the code</a>
@@ -403,6 +425,13 @@
               <div class="earn-fiat mono" id="earnedFiat">≈ $0.00</div>
             </div>
           </div>
+          <div class="deck-foot">
+            <div class="vol">
+              <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M4 9v6h4l5 5V4L8 9H4zm12.5 3a3.5 3.5 0 0 0-2-3.15v6.3A3.5 3.5 0 0 0 16.5 12zM14 4.05v2.06a5 5 0 0 1 0 9.78v2.06a7 7 0 0 0 0-13.9z"/></svg>
+              <input type="range" id="vol" class="vol-range" min="0" max="100" value="80" aria-label="Volume">
+            </div>
+            <div class="upnext" id="upNext"></div>
+          </div>
         </div>
         <div class="withdraw-bar">
           <button class="wd-btn" id="withdrawBtn" type="button">Withdraw</button>
@@ -439,10 +468,7 @@
 </div>
 
 <div class="marquee" aria-hidden="true">
-  <div class="marquee-track">
-    <span>AAPL <b>◆</b> MSFT <b>◆</b> NVDA <b>◆</b> GOOGL <b>◆</b> AMZN <b>◆</b> META <b>◆</b>&nbsp;</span>
-    <span>AAPL <b>◆</b> MSFT <b>◆</b> NVDA <b>◆</b> GOOGL <b>◆</b> AMZN <b>◆</b> META <b>◆</b>&nbsp;</span>
-  </div>
+  <div class="marquee-track" id="marqueeTrack"></div>
 </div>
 
 <div class="feed" aria-hidden="true">
@@ -530,10 +556,26 @@ $ grep -rE "privateKey|custody" src/   <span class="ok"># no matches — Encore 
 
   <footer>
     <span>ENCORE — LISTEN. EARN. REPEAT.</span>
-    <span class="mono">BUILD · v0.8</span>
+    <span class="mono">BUILD · v1.0</span>
   </footer>
 </div>
 
+<script>
+/* ===== stock/company logos (inline SVG, transparent, brand colours) ===== */
+(function(){
+  var L = {
+    AAPL: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.05 12.54c-.03-2.6 2.12-3.85 2.22-3.91-1.21-1.77-3.09-2.01-3.76-2.04-1.6-.16-3.12.94-3.93.94-.81 0-2.06-.92-3.39-.9-1.74.03-3.35 1.01-4.25 2.57-1.81 3.14-.46 7.79 1.3 10.34.86 1.25 1.88 2.65 3.22 2.6 1.29-.05 1.78-.83 3.34-.83 1.56 0 2 .83 3.37.81 1.39-.03 2.27-1.27 3.12-2.53.98-1.45 1.39-2.85 1.41-2.93-.03-.01-2.7-1.04-2.73-4.13M14.6 5.1c.71-.86 1.19-2.06 1.06-3.25-1.02.04-2.26.68-2.99 1.54-.66.76-1.23 1.98-1.08 3.15 1.14.09 2.3-.58 3.01-1.44"/></svg>',
+    MSFT: '<svg viewBox="0 0 24 24"><path fill="#F25022" d="M2 2h9.2v9.2H2z"/><path fill="#7FBA00" d="M12.8 2H22v9.2h-9.2z"/><path fill="#00A4EF" d="M2 12.8h9.2V22H2z"/><path fill="#FFB900" d="M12.8 12.8H22V22h-9.2z"/></svg>',
+    NVDA: '<svg viewBox="0 0 24 24" fill="none"><path d="M4.3 12c2.3-3.7 13.1-3.7 15.4 0-2.3 3.7-13.1 3.7-15.4 0z" stroke="#76B900" stroke-width="1.7"/><circle cx="12" cy="12" r="2.3" fill="#76B900"/></svg>',
+    GOOGL: '<svg viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.1c-.22-.66-.35-1.36-.35-2.1s.13-1.44.35-2.1V7.07H2.18A11 11 0 0 0 1 12c0 1.78.43 3.45 1.18 4.93z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.83C6.71 7.31 9.14 5.38 12 5.38z"/></svg>',
+    AMZN: '<svg viewBox="0 0 24 24" fill="none" stroke="#FF9900" stroke-width="2" stroke-linecap="round"><path d="M4 15.4c3.3 2.5 12.9 2.5 15.3-.3"/><path d="M17.4 13.7c1.7.3 2.3 1.3 1.7 3"/></svg>',
+    META: '<svg viewBox="0 0 24 24" fill="none" stroke="#0081FB" stroke-width="2.2" stroke-linecap="round"><path d="M3 15.5c0-4 1.7-6.8 3.9-6.8 2.7 0 4.1 3.4 5.1 5.1 1-1.7 2.4-5.1 5.1-5.1 2.2 0 3.9 2.8 3.9 6.8"/></svg>'
+  };
+  L.GOOG = L.GOOGL;
+  window.ENCORE_LOGOS = L;
+  window.encoreLogo = function(tk, cls){ var s = L[(tk||'').toUpperCase()]; if(!s) return ''; return '<span class="tlogo'+(cls?' '+cls:'')+'" aria-hidden="true">'+s+'</span>'; };
+})();
+</script>
 <script src="ca.js"></script>
 <script src="tracks.js"></script>
 <script>
@@ -586,12 +628,15 @@ $ grep -rE "privateKey|custody" src/   <span class="ok"># no matches — Encore 
   })();
 
   var el = function(id){ return document.getElementById(id); };
+  var lg = window.encoreLogo || function(){ return ''; };
   var appEl = document.querySelector('.app');
   var playBtn = el('playBtn'), playIcon = el('playIcon'), prevBtn = el('prevBtn'), nextBtn = el('nextBtn');
   var timerEl = el('timer'), earnedEl = el('earned'), earnedFiatEl = el('earnedFiat');
   var earnedUnit = el('earnedUnit'), npReward = el('npReward'), payGrid = el('payGrid');
   var npTrack = el('npTrack'), npArtist = el('npArtist'), cover = el('cover'), npState = el('npState');
   var scrubFill = el('scrubFill'), scrubCur = el('scrubCur'), scrubDur = el('scrubDur'), tabInd = el('tabInd');
+  var upNext = el('upNext'), volEl = el('vol');
+  var userVol = 0.8;
   var canvas = el('eq'), ctx = canvas.getContext('2d');
   var lib = el('lib');
   var root = document.documentElement;
@@ -696,7 +741,7 @@ $ grep -rE "privateKey|custody" src/   <span class="ok"># no matches — Encore 
     if(actx.state==='suspended') actx.resume();
     master.gain.cancelScheduledValues(actx.currentTime);
     master.gain.setValueAtTime(Math.max(master.gain.value,0.0001), actx.currentTime);
-    master.gain.linearRampToValueAtTime(0.6, actx.currentTime+0.25);
+    master.gain.linearRampToValueAtTime(Math.max(0.0001, 0.6*userVol), actx.currentTime+0.25);
     audioActive=true; route(TRACKS[current]);
   }
   function stopAudio(){
@@ -713,7 +758,7 @@ $ grep -rE "privateKey|custody" src/   <span class="ok"># no matches — Encore 
     b.innerHTML =
       '<span class="t-cover" style="background:linear-gradient(140deg,'+tr.c1+','+tr.c2+')"></span>' +
       '<span class="t-info"><span class="t-title">'+tr.title+'</span><span class="t-artist">'+tr.artist+'</span></span>' +
-      '<span class="t-right"><span class="t-badge">→ '+tr.ticker+'</span><span class="t-est mono">≈ '+compact(USD_PER_HR/priceOf(tr.ticker))+'/h</span></span>';
+      '<span class="t-right"><span class="t-badge">'+lg(tr.ticker)+' '+tr.ticker+'</span><span class="t-est mono">≈ '+compact(USD_PER_HR/priceOf(tr.ticker))+'/h</span></span>';
     b.addEventListener('click', function(){ selectTrack(i); showPanel('player'); });
     lib.appendChild(b);
   });
@@ -729,17 +774,19 @@ $ grep -rE "privateKey|custody" src/   <span class="ok"># no matches — Encore 
   if(payGrid){ TRACKS.forEach(function(tr, i){
     var d = document.createElement('div'); d.className='pay-card magnetic';
     d.innerHTML = '<span class="pay-song">'+(tr.title||'Track')+'</span>' + sparkline(i+3, 1) +
-      '<span class="pay-ticker">'+tr.ticker+'</span><span class="pay-est mono">≈ '+compact(USD_PER_HR/priceOf(tr.ticker))+'/h</span>';
+      '<span class="pay-ticker">'+lg(tr.ticker)+tr.ticker+'</span><span class="pay-est mono">≈ '+compact(USD_PER_HR/priceOf(tr.ticker))+'/h</span>';
     payGrid.appendChild(d);
   }); }
 
   function selectTrack(i){
     current = i; var tr = TRACKS[i]; trackSec = 0;
     npTrack.textContent = tr.title; npArtist.textContent = tr.artist || 'partnered release';
-    if(npReward) npReward.textContent = tr.ticker;
+    if(npReward) npReward.innerHTML = lg(tr.ticker) + ' ' + tr.ticker;
     if(earnedUnit) earnedUnit.textContent = tr.ticker;
     root.style.setProperty('--track', tr.c1); root.style.setProperty('--track2', tr.c2);
     cover.style.background = 'linear-gradient(140deg,'+tr.c1+','+tr.c2+')';
+    cover.innerHTML = '<span class="cover-logo">'+lg(tr.ticker)+'</span>';
+    if(upNext){ var nx = TRACKS[(i+1)%TRACKS.length]; upNext.innerHTML = 'Up next · <strong>'+nx.title+'</strong> '+lg(nx.ticker)+' '+nx.ticker; }
     if(scrubDur) scrubDur.textContent = fmtClock(durSec(tr));
     if(scrubCur) scrubCur.textContent = '0:00';
     if(scrubFill) scrubFill.style.width = '0%';
@@ -783,7 +830,7 @@ $ grep -rE "privateKey|custody" src/   <span class="ok"># no matches — Encore 
     if(!keys.length){ balList.innerHTML = '<div class="bal-empty">Press play to start earning.<br>Each track drops its own stock token here.</div>'; balTotalEl.textContent = '$0.00'; return; }
     var html = '', total = 0;
     keys.forEach(function(tk){ var usd = balances[tk]; total += usd; var tokens = usd / priceOf(tk);
-      html += '<div class="bal-row"><span class="bal-ic" style="background:'+tickerColor(tk)+'">'+tk.slice(0,2)+'</span>' +
+      html += '<div class="bal-row"><span class="bal-logo">'+(lg(tk)||('<span class="bal-ic" style="background:'+tickerColor(tk)+'">'+tk.slice(0,2)+'</span>'))+'</span>' +
         '<span><span class="bal-tk">'+tk+'</span><br><span class="bal-sub">'+fmtTokens(tokens)+' tokens · @ $'+priceOf(tk)+'</span></span>' +
         '<span class="bal-right"><span class="bal-amt">'+fmtTokens(tokens)+'</span><br><span class="bal-usd">$'+formatFiat(usd)+'</span></span></div>';
     });
@@ -850,6 +897,12 @@ $ grep -rE "privateKey|custody" src/   <span class="ok"># no matches — Encore 
     playBtn.setAttribute('aria-label', playing ? 'Pause' : 'Play');
   }
   playBtn.addEventListener('click', toggle);
+  if(volEl){ volEl.addEventListener('input', function(){
+    userVol = Math.max(0, Math.min(1, (parseFloat(volEl.value)||0)/100));
+    if(audioEl) audioEl.volume = userVol;
+    if(playing && actx && master){ master.gain.cancelScheduledValues(actx.currentTime);
+      master.gain.setTargetAtTime(Math.max(0.0001, 0.6*userVol), actx.currentTime, 0.05); }
+  }); }
 
   (function renderCA(){
     var wrap = el('ca'); if(!wrap || !CA) return;
@@ -944,9 +997,27 @@ $ grep -rE "privateKey|custody" src/   <span class="ok"># no matches — Encore 
   requestAnimationFrame(loop);
 })();
 
+/* ===== inject logos into inline [data-tk] mentions ===== */
+(function(){
+  if(!window.encoreLogo) return;
+  Array.prototype.forEach.call(document.querySelectorAll('[data-tk]'), function(e){
+    e.innerHTML = window.encoreLogo(e.getAttribute('data-tk')) + ' ' + (e.getAttribute('data-tk'));
+  });
+})();
+
+/* ===== ticker marquee with logos ===== */
+(function(){
+  var track = document.getElementById('marqueeTrack'); if(!track) return;
+  var lg = window.encoreLogo || function(){ return ''; };
+  var TKS = ['AAPL','MSFT','NVDA','GOOGL','AMZN','META'];
+  function block(){ return '<span>' + TKS.map(function(t){ return lg(t)+' '+t; }).join(' <b>◆</b> ') + ' <b>◆</b>&nbsp;</span>'; }
+  track.innerHTML = block() + block();
+})();
+
 /* ===== sample rewards feed (illustrative) ===== */
 (function(){
   var track = document.getElementById('feedTrack'); if(!track) return;
+  var lg = window.encoreLogo || function(){ return ''; };
   var TK = [['AAPL',230],['MSFT',430],['NVDA',120],['GOOGL',165],['AMZN',185],['META',560]];
   var items = [];
   for(var i=0;i<16;i++){
@@ -954,7 +1025,7 @@ $ grep -rE "privateKey|custody" src/   <span class="ok"># no matches — Encore 
     var usd = 0.03 + Math.random()*0.9;               // illustrative payout value
     var tokens = usd / t[1];
     var amt = tokens>=0.01 ? tokens.toFixed(4) : tokens.toFixed(6);
-    items.push('<span class="fi">▲ <span class="amt">'+amt+'</span> <span class="tk">'+t[0]+'</span> · $'+usd.toFixed(2)+'</span>');
+    items.push('<span class="fi">▲ <span class="amt">'+amt+'</span> '+lg(t[0])+' <span class="tk">'+t[0]+'</span> · $'+usd.toFixed(2)+'</span>');
   }
   track.innerHTML = items.join('') + items.join('');   // duplicate for seamless loop
 })();
