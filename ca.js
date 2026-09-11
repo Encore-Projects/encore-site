@@ -13,3 +13,10 @@ window.ENCORE_CA = "";
 //
 // Exemple :  window.ENCORE_BUY_URL = "https://ton-dex.xyz/token/3nv6Ct...";
 window.ENCORE_BUY_URL = "";
+
+// (Optionnel) LIEN CHART : la chart de ton token sur Dexscreener (ou autre).
+// Les cartes "stocks" du site sont cliquables et ouvrent ce lien.
+// Tant que c'est vide, elles ouvrent dexscreener.com par défaut.
+//
+// Exemple :  window.ENCORE_DEX_URL = "https://dexscreener.com/solana/3nv6Ct...";
+window.ENCORE_DEX_URL = "";

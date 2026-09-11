@@ -97,7 +97,7 @@
 
   .deck{ position:relative; background:linear-gradient(180deg, var(--a-surface), rgba(20,20,30,0.66)); border:1px solid var(--a-line-soft); border-radius:20px; padding:18px 18px 17px; display:flex; flex-direction:column; gap:15px; box-shadow:0 20px 50px -40px #000; }
   .np-row{ display:flex; align-items:center; gap:15px; }
-  .cover{ position:relative; width:66px; height:66px; border-radius:16px; flex-shrink:0; display:block; overflow:hidden;
+  .cover{ position:relative; width:78px; height:78px; border-radius:17px; flex-shrink:0; display:block; overflow:hidden;
     background:linear-gradient(140deg,var(--track),var(--track2)); box-shadow:0 14px 30px -12px var(--track), 0 0 0 1px rgba(255,255,255,0.09) inset; }
   .cover::after{ content:""; position:absolute; inset:0; background:linear-gradient(125deg, rgba(255,255,255,0.4), transparent 44%); mix-blend-mode:overlay; }
   .np-meta{ flex:1; min-width:0; }
@@ -179,10 +179,13 @@
   .wd-submit:disabled{ opacity:.45; cursor:not-allowed; }
   .wd-status{ font-size:12.5px; color:var(--up); margin:12px 0 0; text-align:center; }
 
-  .marquee{ overflow:hidden; border-top:1px solid var(--line); border-bottom:1px solid var(--line); padding:16px 0; background:var(--ink); }
-  .marquee-track{ display:flex; width:max-content; animation:scroll 30s linear infinite; }
-  .marquee-track span{ font-family:'Bricolage Grotesque', sans-serif; font-weight:700; font-size:22px; color:var(--bg); padding:0 4px; white-space:nowrap; display:inline-flex; align-items:center; gap:22px; }
-  .marquee-track b{ color:var(--coral); font-weight:800; }
+  .marquee{ overflow:hidden; border-top:1px solid var(--line); border-bottom:1px solid var(--line); padding:13px 0; background:var(--ink); }
+  .marquee-track{ display:flex; width:max-content; animation:scroll 44s linear infinite; }
+  .mq-item{ display:inline-flex; align-items:center; gap:9px; padding:0 26px; white-space:nowrap; color:var(--bg); border-right:1px solid rgba(150,150,160,0.22); }
+  .mq-item .tlogo{ width:22px; height:22px; }
+  .mq-tk{ font-family:'Space Mono', monospace; font-weight:700; font-size:16px; letter-spacing:0.02em; }
+  .mq-chg{ font-family:'Space Mono', monospace; font-weight:700; font-size:13px; display:inline-flex; align-items:center; gap:3px; color:#22C58B; }
+  .mq-chg.dn{ color:#F0562E; }
   @keyframes scroll{ from{ transform:translateX(0); } to{ transform:translateX(-50%); } }
 
   .band{ padding:90px 0; }
@@ -192,18 +195,20 @@
   .band p.big{ font-size:19px; color:var(--ink-soft); max-width:56ch; margin:0; }
 
   .pay-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:14px; margin-top:44px; }
-  .pay-card{ display:flex; align-items:center; gap:11px; min-width:0; background:var(--paper); border:1px solid var(--line); border-radius:14px; padding:16px 18px; }
+  .pay-card{ display:flex; align-items:center; gap:11px; min-width:0; background:var(--paper); border:1px solid var(--line); border-radius:14px; padding:16px 18px; text-decoration:none; color:inherit; cursor:pointer; }
   .pay-song{ flex:1; min-width:0; font-weight:600; font-size:15px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
   .pay-arrow{ color:var(--ink-soft); }
   .pay-ticker{ font-family:'Space Mono', monospace; font-weight:700; font-size:14px; color:var(--accent); }
   .pay-est{ font-size:11px; color:var(--ink-soft); margin-left:0; white-space:nowrap; }
-  .pay-spark{ width:58px; height:22px; flex-shrink:0; color:var(--up); overflow:visible; }
-  .pay-spark .sp-line{ fill:none; stroke:currentColor; stroke-width:1.6; stroke-linejoin:round; stroke-linecap:round; vector-effect:non-scaling-stroke; }
-  .pay-spark .sp-area{ fill:currentColor; opacity:0.13; stroke:none; }
+  .pay-go{ font-family:'Space Mono', monospace; font-size:13px; color:var(--ink-soft); opacity:0; transform:translateX(-3px); transition:opacity .18s ease, transform .18s ease, color .18s ease; flex-shrink:0; }
+  .pay-card:hover .pay-go{ opacity:1; transform:none; color:var(--accent); }
+  .pay-spark{ width:60px; height:24px; flex-shrink:0; color:var(--up); overflow:visible; }
+  .pay-spark .sp-line{ fill:none; stroke:currentColor; stroke-width:1.7; stroke-linejoin:round; stroke-linecap:round; vector-effect:non-scaling-stroke; }
+  .pay-spark .sp-area{ stroke:none; }
   .pay-card.magnetic{ transition:transform .18s cubic-bezier(.2,.7,.2,1), box-shadow .18s ease, border-color .18s ease; will-change:transform; }
   .pay-card.magnetic:hover{ border-color:var(--accent); box-shadow:0 18px 40px -26px var(--shadow); }
   @media (max-width:760px){ .pay-grid{ grid-template-columns:1fr; } }
-  @media (max-width:560px){ .pay-spark{ display:none; } .pay-card{ gap:9px; padding:14px 15px; } .pay-est{ font-size:10px; } }
+  @media (max-width:560px){ .pay-spark, .pay-go{ display:none; } .pay-card{ gap:9px; padding:14px 15px; } .pay-est{ font-size:10px; } }
 
   /* earnings calculator */
   .calc{ background:var(--paper); border:1px solid var(--line); border-radius:18px; padding:26px 28px; margin-top:36px; max-width:720px; }
@@ -340,8 +345,8 @@
   .marquee-track .tlogo{ width:22px; height:22px; vertical-align:-5px; }
   .feed-track .tlogo{ width:14px; height:14px; }
   .lede .tlogo{ width:16px; height:16px; vertical-align:-3px; margin:0 1px; }
-  .cover-logo{ position:absolute; right:-6px; bottom:-6px; width:28px; height:28px; border-radius:9px; background:var(--a-bg); border:1px solid var(--a-line); display:grid; place-items:center; box-shadow:0 6px 14px -6px #000; }
-  .cover-logo .tlogo{ width:17px; height:17px; }
+  .cover-logo{ position:absolute; inset:0; display:grid; place-items:center; }
+  .cover-logo .tlogo{ width:42px; height:42px; filter:drop-shadow(0 3px 9px rgba(0,0,0,0.5)); }
 </style>
 </head>
 <body>
@@ -364,12 +369,16 @@
   <section class="hero" id="top">
     <div class="aurora" aria-hidden="true"><span class="b1"></span><span class="b2"></span><span class="b3"></span></div>
     <div class="orbits" aria-hidden="true">
-      <div class="orbit" style="left:1%;  top:5%;  --s:58px; color:#14141C;"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 .5C5.37.5 0 5.87 0 12.5c0 5.3 3.44 9.8 8.21 11.39.6.11.82-.26.82-.58 0-.29-.01-1.05-.02-2.06-3.34.73-4.04-1.61-4.04-1.61-.55-1.39-1.34-1.76-1.34-1.76-1.09-.75.08-.73.08-.73 1.21.09 1.85 1.24 1.85 1.24 1.07 1.84 2.81 1.31 3.5 1 .11-.78.42-1.31.76-1.61-2.67-.3-5.47-1.34-5.47-5.95 0-1.31.47-2.38 1.24-3.22-.12-.31-.54-1.52.12-3.18 0 0 1.01-.32 3.3 1.23a11.5 11.5 0 0 1 6 0c2.29-1.55 3.3-1.23 3.3-1.23.66 1.66.24 2.87.12 3.18.77.84 1.24 1.91 1.24 3.22 0 4.62-2.81 5.64-5.49 5.94.43.37.81 1.1.81 2.22 0 1.6-.01 2.9-.01 3.29 0 .32.22.7.83.58C20.56 22.29 24 17.79 24 12.5 24 5.87 18.63.5 12 .5z"/></svg></div>
-      <div class="orbit" style="left:42%; top:4%;  --s:50px; color:#1DB954;"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm4.59 14.43a.62.62 0 0 1-.86.21c-2.35-1.44-5.3-1.76-8.79-.96a.62.62 0 1 1-.28-1.21c3.81-.87 7.08-.5 9.72 1.11.29.18.39.57.21.85zm1.22-2.72a.78.78 0 0 1-1.07.26c-2.69-1.65-6.79-2.13-9.97-1.17a.78.78 0 1 1-.45-1.49c3.63-1.1 8.15-.56 11.24 1.33.37.22.49.71.25 1.07zm.11-2.84C14.7 8.99 9.39 8.82 6.4 9.73a.94.94 0 1 1-.54-1.8c3.43-1.04 9.29-.84 12.95 1.33a.94.94 0 0 1-.96 1.61z"/></svg></div>
-      <div class="orbit" style="left:2%;  top:58%; --s:48px; color:#627EEA;"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2 5 12.3 12 16.2 19 12.3 12 2zM5 13.7 12 22l7-8.3-7 3.9-7-3.9z"/></svg></div>
-      <div class="orbit" style="left:15%; top:85%; --s:54px; color:#00C805;"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M6.5 21c-.4-6.6 3.2-13 12-16.8-1.3 5.6-2.6 9-4.9 11.2 1.1.1 2.3-.1 3.6-.7-1.9 2.8-4.4 4.3-6.9 4.3-.7 1-1.1 1.9-1.2 3H6.5z"/></svg></div>
-      <div class="orbit" style="left:46%; top:33%; --s:42px; color:#627EEA;"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2 5 12.3 12 16.2 19 12.3 12 2zM5 13.7 12 22l7-8.3-7 3.9-7-3.9z"/></svg></div>
-      <div class="orbit" style="left:37%; top:88%; --s:44px; color:#14141C;"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 .5C5.37.5 0 5.87 0 12.5c0 5.3 3.44 9.8 8.21 11.39.6.11.82-.26.82-.58 0-.29-.01-1.05-.02-2.06-3.34.73-4.04-1.61-4.04-1.61-.55-1.39-1.34-1.76-1.34-1.76-1.09-.75.08-.73.08-.73 1.21.09 1.85 1.24 1.85 1.24 1.07 1.84 2.81 1.31 3.5 1 .11-.78.42-1.31.76-1.61-2.67-.3-5.47-1.34-5.47-5.95 0-1.31.47-2.38 1.24-3.22-.12-.31-.54-1.52.12-3.18 0 0 1.01-.32 3.3 1.23a11.5 11.5 0 0 1 6 0c2.29-1.55 3.3-1.23 3.3-1.23.66 1.66.24 2.87.12 3.18.77.84 1.24 1.91 1.24 3.22 0 4.62-2.81 5.64-5.49 5.94.43.37.81 1.1.81 2.22 0 1.6-.01 2.9-.01 3.29 0 .32.22.7.83.58C20.56 22.29 24 17.79 24 12.5 24 5.87 18.63.5 12 .5z"/></svg></div>
+      <!-- top band -->
+      <div class="orbit" style="left:2%;  top:6%;  --s:54px; color:#14141C;"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 .5C5.37.5 0 5.87 0 12.5c0 5.3 3.44 9.8 8.21 11.39.6.11.82-.26.82-.58 0-.29-.01-1.05-.02-2.06-3.34.73-4.04-1.61-4.04-1.61-.55-1.39-1.34-1.76-1.34-1.76-1.09-.75.08-.73.08-.73 1.21.09 1.85 1.24 1.85 1.24 1.07 1.84 2.81 1.31 3.5 1 .11-.78.42-1.31.76-1.61-2.67-.3-5.47-1.34-5.47-5.95 0-1.31.47-2.38 1.24-3.22-.12-.31-.54-1.52.12-3.18 0 0 1.01-.32 3.3 1.23a11.5 11.5 0 0 1 6 0c2.29-1.55 3.3-1.23 3.3-1.23.66 1.66.24 2.87.12 3.18.77.84 1.24 1.91 1.24 3.22 0 4.62-2.81 5.64-5.49 5.94.43.37.81 1.1.81 2.22 0 1.6-.01 2.9-.01 3.29 0 .32.22.7.83.58C20.56 22.29 24 17.79 24 12.5 24 5.87 18.63.5 12 .5z"/></svg></div>
+      <div class="orbit" style="left:39%; top:4%;  --s:46px; color:#1DB954;"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm4.59 14.43a.62.62 0 0 1-.86.21c-2.35-1.44-5.3-1.76-8.79-.96a.62.62 0 1 1-.28-1.21c3.81-.87 7.08-.5 9.72 1.11.29.18.39.57.21.85zm1.22-2.72a.78.78 0 0 1-1.07.26c-2.69-1.65-6.79-2.13-9.97-1.17a.78.78 0 1 1-.45-1.49c3.63-1.1 8.15-.56 11.24 1.33.37.22.49.71.25 1.07zm.11-2.84C14.7 8.99 9.39 8.82 6.4 9.73a.94.94 0 1 1-.54-1.8c3.43-1.04 9.29-.84 12.95 1.33a.94.94 0 0 1-.96 1.61z"/></svg></div>
+      <div class="orbit" style="left:25%; top:3%;  --s:40px;"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="11" fill="#F7931A"/><path fill="#fff" d="M10 6.5h1.4v1.2q.45.01.9.03V6.5h1.4v1.3c1.9.15 3.1.9 3.1 2.5 0 1-.5 1.6-1.3 1.9 1 .25 1.6.9 1.6 2 0 1.7-1.3 2.5-3.4 2.6v1.2h-1.4v-1.2q-.45 0-.9-.01v1.21H10v-1.3H8v-1.5h1c.4 0 .5-.2.5-.42V10c0-.28-.1-.4-.5-.4H8V8h2V6.5zm1.4 4.6c1 0 2.3.1 2.3-.9s-1.3-.9-2.3-.9v1.8zm0 3.6c1.2 0 2.6.1 2.6-1s-1.4-1-2.6-1v2z"/></svg></div>
+      <!-- column gap -->
+      <div class="orbit" style="left:46%; top:29%; --s:40px; color:#627EEA;"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2 5 12.3 12 16.2 19 12.3 12 2zM5 13.7 12 22l7-8.3-7 3.9-7-3.9z"/></svg></div>
+      <!-- bottom-left empty zone -->
+      <div class="orbit" style="left:3%;  top:87%; --s:46px; color:#627EEA;"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2 5 12.3 12 16.2 19 12.3 12 2zM5 13.7 12 22l7-8.3-7 3.9-7-3.9z"/></svg></div>
+      <div class="orbit" style="left:17%; top:90%; --s:52px; color:#00C805;"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M6.5 21c-.4-6.6 3.2-13 12-16.8-1.3 5.6-2.6 9-4.9 11.2 1.1.1 2.3-.1 3.6-.7-1.9 2.8-4.4 4.3-6.9 4.3-.7 1-1.1 1.9-1.2 3H6.5z"/></svg></div>
+      <div class="orbit" style="left:34%; top:86%; --s:44px;"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="11" fill="#0052FF"/><path d="M12 6.6a5.4 5.4 0 1 0 0 10.8 5.4 5.4 0 0 0 0-10.8zm0 7a1.6 1.6 0 1 1 0-3.2 1.6 1.6 0 0 1 0 3.2z" fill="#fff"/></svg></div>
     </div>
     <div class="hero-col">
       <p class="eyebrow">Listen-to-earn · Robinhood Chain</p>
@@ -433,12 +442,16 @@
             <div class="upnext" id="upNext"></div>
           </div>
         </div>
-        <div class="withdraw-bar">
-          <button class="wd-btn" id="withdrawBtn" type="button">Withdraw</button>
-          <span class="wd-hint">Withdrawals open at launch</span>
-        </div>
-        <div class="wd-panel" id="wdPanel" hidden>
-          <div class="wd-head"><span class="wd-title">Withdraw your balance</span></div>
+      </div>
+      <div class="panel" id="panelLibrary" role="tabpanel" aria-labelledby="tabLibrary" hidden>
+        <div class="lib" id="lib"></div>
+        <div class="lib-note">Tap a track to load it — each release pays its own stock token.</div>
+      </div>
+      <div class="panel" id="panelWallet" role="tabpanel" aria-labelledby="tabWallet" hidden>
+        <div class="bal" id="bal"></div>
+        <div class="bal-total"><span>Total value</span><span class="mono" id="balTotal">$0.00</span></div>
+        <div class="wd-panel" id="wdPanel">
+          <div class="wd-head"><span class="wd-title">Withdraw</span><span class="wd-hint">Opens at launch</span></div>
           <div class="wd-row"><span>Available</span><span class="mono" id="wdAvail">$0.00</span></div>
           <div class="wd-row"><span>Minimum</span><span class="mono">$1.00</span></div>
           <div class="wd-row"><span>Network fee</span><span class="mono">$0.20</span></div>
@@ -452,14 +465,6 @@
           <button class="wd-submit" id="wdSubmit" type="button">Request withdrawal</button>
           <p class="wd-status" id="wdStatus" hidden></p>
         </div>
-      </div>
-      <div class="panel" id="panelLibrary" role="tabpanel" aria-labelledby="tabLibrary" hidden>
-        <div class="lib" id="lib"></div>
-        <div class="lib-note">Tap a track to load it — each release pays its own stock token.</div>
-      </div>
-      <div class="panel" id="panelWallet" role="tabpanel" aria-labelledby="tabWallet" hidden>
-        <div class="bal" id="bal"></div>
-        <div class="bal-total"><span>Total value</span><span class="mono" id="balTotal">$0.00</span></div>
         <div class="lib-note">Your session holdings, per stock token. What matters is the <strong>value</strong> — how much a stake is worth — not how many tokens you hold.</div>
       </div>
       <p class="app-note">The counter uses an illustrative rate — it shows how rewards accrue, not a guaranteed payout.</p>
@@ -556,7 +561,7 @@ $ grep -rE "privateKey|custody" src/   <span class="ok"># no matches — Encore 
 
   <footer>
     <span>ENCORE — LISTEN. EARN. REPEAT.</span>
-    <span class="mono">BUILD · v1.0</span>
+    <span class="mono">BUILD · v1.1</span>
   </footer>
 </div>
 
@@ -763,19 +768,24 @@ $ grep -rE "privateKey|custody" src/   <span class="ok"># no matches — Encore 
     lib.appendChild(b);
   });
   function sparkline(seed, up){
-    var n = 12, w = 68, h = 22, r = (seed*9301+49297)%233280, pts = [], v = 0.5;
-    for(var i=0;i<n;i++){ r = (r*9301+49297)%233280; var rnd = r/233280; v += (rnd-0.5)*0.34 + up*0.055; v = Math.max(0.08, Math.min(0.92, v));
+    var n = 14, w = 72, h = 24, r = (seed*9301+49297)%233280, pts = [], v = 0.45;
+    for(var i=0;i<n;i++){ r = (r*9301+49297)%233280; var rnd = r/233280; v += (rnd-0.5)*0.30 + up*0.05; v = Math.max(0.10, Math.min(0.90, v));
       pts.push([ (i/(n-1))*w, h - v*h ]); }
     var d = 'M' + pts.map(function(p){ return p[0].toFixed(1)+','+p[1].toFixed(1); }).join(' L');
     var area = d + ' L'+w+','+h+' L0,'+h+' Z';
+    var gid = 'spg'+seed;
     return '<svg class="pay-spark" viewBox="0 0 '+w+' '+h+'" preserveAspectRatio="none" aria-hidden="true">' +
-      '<path class="sp-area" d="'+area+'"/><path class="sp-line" d="'+d+'"/></svg>';
+      '<defs><linearGradient id="'+gid+'" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="currentColor" stop-opacity="0.3"/><stop offset="1" stop-color="currentColor" stop-opacity="0"/></linearGradient></defs>' +
+      '<path class="sp-area" d="'+area+'" fill="url(#'+gid+')"/><path class="sp-line" d="'+d+'"/></svg>';
   }
-  if(payGrid){ TRACKS.forEach(function(tr, i){
-    var d = document.createElement('div'); d.className='pay-card magnetic';
-    d.innerHTML = '<span class="pay-song">'+(tr.title||'Track')+'</span>' + sparkline(i+3, 1) +
-      '<span class="pay-ticker">'+lg(tr.ticker)+tr.ticker+'</span><span class="pay-est mono">≈ '+compact(USD_PER_HR/priceOf(tr.ticker))+'/h</span>';
-    payGrid.appendChild(d);
+  if(payGrid){ var DEX = (window.ENCORE_DEX_URL||'').trim() || 'https://dexscreener.com';
+    TRACKS.forEach(function(tr, i){
+    var a = document.createElement('a'); a.className='pay-card magnetic'; a.href=DEX; a.target='_blank'; a.rel='noopener';
+    a.setAttribute('title','View chart on Dexscreener');
+    a.innerHTML = '<span class="pay-song">'+(tr.title||'Track')+'</span>' + sparkline(i+3, 1) +
+      '<span class="pay-ticker">'+lg(tr.ticker)+tr.ticker+'</span><span class="pay-est mono">≈ '+compact(USD_PER_HR/priceOf(tr.ticker))+'/h</span>' +
+      '<span class="pay-go" aria-hidden="true">↗</span>';
+    payGrid.appendChild(a);
   }); }
 
   function selectTrack(i){
@@ -815,7 +825,7 @@ $ grep -rE "privateKey|custody" src/   <span class="ok"># no matches — Encore 
   function showPanel(which){
     TABS.forEach(function(o){ var on = o.k===which; o.p.hidden = !on; o.t.classList.toggle('is-active', on); o.t.setAttribute('aria-selected', on); });
     if(which==='player') sizeCanvas();
-    if(which==='wallet') renderBalances();
+    if(which==='wallet'){ renderBalances(); refreshWithdraw(); }
     positionTabInd();
   }
   TABS.forEach(function(o){ o.t.addEventListener('click', function(){ showPanel(o.k); }); });
@@ -917,17 +927,15 @@ $ grep -rE "privateKey|custody" src/   <span class="ok"># no matches — Encore 
   })();
 
   var MIN_USD = 1, FEE_USD = 0.20;
-  var withdrawBtn = el('withdrawBtn'), wdPanel = el('wdPanel');
   var wdAvail = el('wdAvail'), wdReceive = el('wdReceive');
   var wdSubmit = el('wdSubmit'), wdStatus = el('wdStatus'), wdConnect = el('wdConnect');
   function currentUsd(){ return elapsed() * RATE * SOL_USD; }
-  function refreshWithdraw(){ var bal = currentUsd(); wdAvail.textContent = '$' + bal.toFixed(2);
+  function refreshWithdraw(){ if(!wdAvail) return; var bal = currentUsd(); wdAvail.textContent = '$' + bal.toFixed(2);
     wdReceive.textContent = '$' + (bal >= MIN_USD ? Math.max(0, bal - FEE_USD) : 0).toFixed(2); wdSubmit.disabled = bal < MIN_USD; }
   function showStatus(msg){ wdStatus.hidden = false; wdStatus.textContent = msg; }
-  withdrawBtn.addEventListener('click', function(){ wdPanel.hidden = !wdPanel.hidden; if(!wdPanel.hidden){ refreshWithdraw(); wdStatus.hidden = true; } });
-  wdSubmit.addEventListener('click', function(){ refreshWithdraw(); showStatus(currentUsd() < MIN_USD ? 'Minimum $' + MIN_USD.toFixed(2) + ' — it just has to beat the network fee.' : 'Withdrawals open at launch — follow @Encore_Projects.'); });
-  wdConnect.addEventListener('click', function(){ showStatus('Wallet connect opens at launch.'); });
-  setInterval(function(){ if(!wdPanel.hidden) refreshWithdraw(); }, 300);
+  if(wdSubmit) wdSubmit.addEventListener('click', function(){ refreshWithdraw(); showStatus(currentUsd() < MIN_USD ? 'Minimum $' + MIN_USD.toFixed(2) + ' — it just has to beat the network fee.' : 'Withdrawals open at launch — follow @Encore_Projects.'); });
+  if(wdConnect) wdConnect.addEventListener('click', function(){ showStatus('Wallet connect opens at launch.'); });
+  setInterval(function(){ if(panelWallet && !panelWallet.hidden) refreshWithdraw(); }, 300);
 
   selectTrack(0); sizeCanvas(); positionTabInd(); requestAnimationFrame(frame);
 })();
@@ -1005,13 +1013,19 @@ $ grep -rE "privateKey|custody" src/   <span class="ok"># no matches — Encore 
   });
 })();
 
-/* ===== ticker marquee with logos ===== */
+/* ===== ticker marquee — logos + illustrative % change ===== */
 (function(){
   var track = document.getElementById('marqueeTrack'); if(!track) return;
   var lg = window.encoreLogo || function(){ return ''; };
-  var TKS = ['AAPL','MSFT','NVDA','GOOGL','AMZN','META'];
-  function block(){ return '<span>' + TKS.map(function(t){ return lg(t)+' '+t; }).join(' <b>◆</b> ') + ' <b>◆</b>&nbsp;</span>'; }
-  track.innerHTML = block() + block();
+  // illustrative daily moves (mostly green / bullish)
+  var ROWS = [['AAPL',1.24],['MSFT',0.86],['NVDA',3.42],['GOOGL',0.51],['AMZN',1.73],['META',2.15],['TSLA',-0.62],['SPY',0.44]];
+  function item(r){
+    var up = r[1] >= 0;
+    return '<span class="mq-item">'+lg(r[0])+'<span class="mq-tk">'+r[0]+'</span>' +
+      '<span class="mq-chg'+(up?'':' dn')+'">'+(up?'▲':'▼')+' '+(up?'+':'')+r[1].toFixed(2)+'%</span></span>';
+  }
+  var block = ROWS.map(item).join('');
+  track.innerHTML = block + block;   // duplicate for seamless loop
 })();
 
 /* ===== sample rewards feed (illustrative) ===== */
