@@ -5,4 +5,4 @@
 //
 // Exemple :  window.ENCORE_CA = "3nv6CtYWRacohRqY3mPdxDc13DxFSy18GYWTkQKuqd5c";
 
-window.ENCORE_CA = "7qiP2qdu8KndbwdrzhN6sgkKu1ct3wPS5YcfppWVpump";
+window.ENCORE_CA = "";
