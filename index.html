@@ -85,6 +85,8 @@
     background:linear-gradient(150deg, rgba(255,255,255,0.16), rgba(255,255,255,0) 42%);
     -webkit-mask:linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); -webkit-mask-composite:xor; mask-composite:exclude; }
   .app > *{ position:relative; z-index:1; }
+  .app{ transition:transform .3s cubic-bezier(.2,.7,.2,1); will-change:transform; }
+  @media (prefers-reduced-motion: reduce){ .app{ transition:none; transform:none !important; } }
 
   .tabs{ position:relative; display:inline-flex; gap:2px; padding:4px; margin-bottom:18px; background:rgba(0,0,0,0.30); border:1px solid var(--a-line-soft); border-radius:13px; }
   .tab{ position:relative; z-index:1; font-family:'Space Mono', monospace; font-size:11.5px; border:none; background:transparent; color:var(--a-muted); cursor:pointer; padding:9px 16px; border-radius:9px; display:flex; align-items:center; gap:7px; transition:color .22s ease; }
@@ -179,7 +181,7 @@
   .wd-submit:disabled{ opacity:.45; cursor:not-allowed; }
   .wd-status{ font-size:12.5px; color:var(--up); margin:12px 0 0; text-align:center; }
 
-  .marquee{ overflow:hidden; border-top:1px solid var(--line); border-bottom:1px solid var(--line); padding:13px 0; background:var(--ink); }
+  .marquee{ position:sticky; top:0; z-index:58; overflow:hidden; border-top:1px solid var(--line); border-bottom:1px solid var(--line); padding:13px 0; background:var(--ink); box-shadow:0 14px 26px -20px var(--shadow); }
   .marquee-track{ display:flex; width:max-content; animation:scroll 44s linear infinite; }
   .mq-item{ display:inline-flex; align-items:center; gap:9px; padding:0 26px; white-space:nowrap; color:var(--bg); border-right:1px solid rgba(150,150,160,0.22); }
   .mq-item .tlogo{ width:22px; height:22px; }
@@ -302,6 +304,14 @@
   :root[data-theme="dark"] .aurora span{ mix-blend-mode:screen; opacity:.3; }
   @keyframes float-a{ 0%,100%{ transform:translate(0,0) scale(1); } 33%{ transform:translate(32px,-26px) scale(1.09); } 66%{ transform:translate(-24px,22px) scale(.94); } }
 
+  /* ---- hero stat strip (fills the left column) ---- */
+  .hero-stats{ display:flex; gap:30px; margin-top:30px; padding-top:22px; border-top:1px solid var(--line-soft); flex-wrap:wrap; }
+  .hstat{ display:flex; flex-direction:column; gap:3px; }
+  .hs-num{ font-family:'Bricolage Grotesque', sans-serif; font-weight:800; font-size:27px; line-height:1; letter-spacing:-0.02em; color:var(--ink); }
+  .hstat:nth-child(1) .hs-num{ color:var(--accent); }
+  .hstat:nth-child(2) .hs-num{ color:var(--up); }
+  .hs-lab{ font-family:'Space Mono', monospace; font-size:9.5px; letter-spacing:0.13em; text-transform:uppercase; color:var(--ink-soft); }
+
   /* ---- floating brand logos that dodge the cursor ---- */
   .orbits{ position:absolute; inset:0; z-index:0; pointer-events:none; }
   .orbit{ position:absolute; width:var(--s,58px); height:var(--s,58px); opacity:.19; will-change:transform; }
@@ -370,15 +380,15 @@
     <div class="aurora" aria-hidden="true"><span class="b1"></span><span class="b2"></span><span class="b3"></span></div>
     <div class="orbits" aria-hidden="true">
       <!-- top band -->
-      <div class="orbit" style="left:2%;  top:6%;  --s:54px; color:#14141C;"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 .5C5.37.5 0 5.87 0 12.5c0 5.3 3.44 9.8 8.21 11.39.6.11.82-.26.82-.58 0-.29-.01-1.05-.02-2.06-3.34.73-4.04-1.61-4.04-1.61-.55-1.39-1.34-1.76-1.34-1.76-1.09-.75.08-.73.08-.73 1.21.09 1.85 1.24 1.85 1.24 1.07 1.84 2.81 1.31 3.5 1 .11-.78.42-1.31.76-1.61-2.67-.3-5.47-1.34-5.47-5.95 0-1.31.47-2.38 1.24-3.22-.12-.31-.54-1.52.12-3.18 0 0 1.01-.32 3.3 1.23a11.5 11.5 0 0 1 6 0c2.29-1.55 3.3-1.23 3.3-1.23.66 1.66.24 2.87.12 3.18.77.84 1.24 1.91 1.24 3.22 0 4.62-2.81 5.64-5.49 5.94.43.37.81 1.1.81 2.22 0 1.6-.01 2.9-.01 3.29 0 .32.22.7.83.58C20.56 22.29 24 17.79 24 12.5 24 5.87 18.63.5 12 .5z"/></svg></div>
-      <div class="orbit" style="left:39%; top:4%;  --s:46px; color:#1DB954;"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm4.59 14.43a.62.62 0 0 1-.86.21c-2.35-1.44-5.3-1.76-8.79-.96a.62.62 0 1 1-.28-1.21c3.81-.87 7.08-.5 9.72 1.11.29.18.39.57.21.85zm1.22-2.72a.78.78 0 0 1-1.07.26c-2.69-1.65-6.79-2.13-9.97-1.17a.78.78 0 1 1-.45-1.49c3.63-1.1 8.15-.56 11.24 1.33.37.22.49.71.25 1.07zm.11-2.84C14.7 8.99 9.39 8.82 6.4 9.73a.94.94 0 1 1-.54-1.8c3.43-1.04 9.29-.84 12.95 1.33a.94.94 0 0 1-.96 1.61z"/></svg></div>
-      <div class="orbit" style="left:25%; top:3%;  --s:40px;"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="11" fill="#F7931A"/><path fill="#fff" d="M10 6.5h1.4v1.2q.45.01.9.03V6.5h1.4v1.3c1.9.15 3.1.9 3.1 2.5 0 1-.5 1.6-1.3 1.9 1 .25 1.6.9 1.6 2 0 1.7-1.3 2.5-3.4 2.6v1.2h-1.4v-1.2q-.45 0-.9-.01v1.21H10v-1.3H8v-1.5h1c.4 0 .5-.2.5-.42V10c0-.28-.1-.4-.5-.4H8V8h2V6.5zm1.4 4.6c1 0 2.3.1 2.3-.9s-1.3-.9-2.3-.9v1.8zm0 3.6c1.2 0 2.6.1 2.6-1s-1.4-1-2.6-1v2z"/></svg></div>
+      <div class="orbit" style="left:1%;  top:6%;  --s:52px; color:#14141C;"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 .5C5.37.5 0 5.87 0 12.5c0 5.3 3.44 9.8 8.21 11.39.6.11.82-.26.82-.58 0-.29-.01-1.05-.02-2.06-3.34.73-4.04-1.61-4.04-1.61-.55-1.39-1.34-1.76-1.34-1.76-1.09-.75.08-.73.08-.73 1.21.09 1.85 1.24 1.85 1.24 1.07 1.84 2.81 1.31 3.5 1 .11-.78.42-1.31.76-1.61-2.67-.3-5.47-1.34-5.47-5.95 0-1.31.47-2.38 1.24-3.22-.12-.31-.54-1.52.12-3.18 0 0 1.01-.32 3.3 1.23a11.5 11.5 0 0 1 6 0c2.29-1.55 3.3-1.23 3.3-1.23.66 1.66.24 2.87.12 3.18.77.84 1.24 1.91 1.24 3.22 0 4.62-2.81 5.64-5.49 5.94.43.37.81 1.1.81 2.22 0 1.6-.01 2.9-.01 3.29 0 .32.22.7.83.58C20.56 22.29 24 17.79 24 12.5 24 5.87 18.63.5 12 .5z"/></svg></div>
+      <div class="orbit" style="left:38%; top:5%;  --s:46px; color:#1DB954;"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm4.59 14.43a.62.62 0 0 1-.86.21c-2.35-1.44-5.3-1.76-8.79-.96a.62.62 0 1 1-.28-1.21c3.81-.87 7.08-.5 9.72 1.11.29.18.39.57.21.85zm1.22-2.72a.78.78 0 0 1-1.07.26c-2.69-1.65-6.79-2.13-9.97-1.17a.78.78 0 1 1-.45-1.49c3.63-1.1 8.15-.56 11.24 1.33.37.22.49.71.25 1.07zm.11-2.84C14.7 8.99 9.39 8.82 6.4 9.73a.94.94 0 1 1-.54-1.8c3.43-1.04 9.29-.84 12.95 1.33a.94.94 0 0 1-.96 1.61z"/></svg></div>
+      <div class="orbit" style="left:20%; top:3%;  --s:42px;"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="11" fill="#F7931A"/><path fill="#fff" d="M10 6.5h1.4v1.2q.45.01.9.03V6.5h1.4v1.3c1.9.15 3.1.9 3.1 2.5 0 1-.5 1.6-1.3 1.9 1 .25 1.6.9 1.6 2 0 1.7-1.3 2.5-3.4 2.6v1.2h-1.4v-1.2q-.45 0-.9-.01v1.21H10v-1.3H8v-1.5h1c.4 0 .5-.2.5-.42V10c0-.28-.1-.4-.5-.4H8V8h2V6.5zm1.4 4.6c1 0 2.3.1 2.3-.9s-1.3-.9-2.3-.9v1.8zm0 3.6c1.2 0 2.6.1 2.6-1s-1.4-1-2.6-1v2z"/></svg></div>
       <!-- column gap -->
-      <div class="orbit" style="left:46%; top:29%; --s:40px; color:#627EEA;"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2 5 12.3 12 16.2 19 12.3 12 2zM5 13.7 12 22l7-8.3-7 3.9-7-3.9z"/></svg></div>
+      <div class="orbit" style="left:51%; top:24%; --s:40px; color:#627EEA;"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2 5 12.3 12 16.2 19 12.3 12 2zM5 13.7 12 22l7-8.3-7 3.9-7-3.9z"/></svg></div>
       <!-- bottom-left empty zone -->
-      <div class="orbit" style="left:3%;  top:87%; --s:46px; color:#627EEA;"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2 5 12.3 12 16.2 19 12.3 12 2zM5 13.7 12 22l7-8.3-7 3.9-7-3.9z"/></svg></div>
-      <div class="orbit" style="left:17%; top:90%; --s:52px; color:#00C805;"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M6.5 21c-.4-6.6 3.2-13 12-16.8-1.3 5.6-2.6 9-4.9 11.2 1.1.1 2.3-.1 3.6-.7-1.9 2.8-4.4 4.3-6.9 4.3-.7 1-1.1 1.9-1.2 3H6.5z"/></svg></div>
-      <div class="orbit" style="left:34%; top:86%; --s:44px;"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="11" fill="#0052FF"/><path d="M12 6.6a5.4 5.4 0 1 0 0 10.8 5.4 5.4 0 0 0 0-10.8zm0 7a1.6 1.6 0 1 1 0-3.2 1.6 1.6 0 0 1 0 3.2z" fill="#fff"/></svg></div>
+      <div class="orbit" style="left:1%;  top:44%; --s:44px; color:#627EEA;"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2 5 12.3 12 16.2 19 12.3 12 2zM5 13.7 12 22l7-8.3-7 3.9-7-3.9z"/></svg></div>
+      <div class="orbit" style="left:51%; top:58%; --s:50px; color:#00C805;"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M6.5 21c-.4-6.6 3.2-13 12-16.8-1.3 5.6-2.6 9-4.9 11.2 1.1.1 2.3-.1 3.6-.7-1.9 2.8-4.4 4.3-6.9 4.3-.7 1-1.1 1.9-1.2 3H6.5z"/></svg></div>
+      <div class="orbit" style="left:26%; top:92%; --s:44px;"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="11" fill="#0052FF"/><path d="M12 6.6a5.4 5.4 0 1 0 0 10.8 5.4 5.4 0 0 0 0-10.8zm0 7a1.6 1.6 0 1 1 0-3.2 1.6 1.6 0 0 1 0 3.2z" fill="#fff"/></svg></div>
     </div>
     <div class="hero-col">
       <p class="eyebrow">Listen-to-earn · Robinhood Chain</p>
@@ -391,6 +401,11 @@
       <div class="ca" id="ca">
         <span class="ca-label">Contract</span>
         <span class="ca-soon" id="caText">Drops at launch — follow @Encore_Projects</span>
+      </div>
+      <div class="hero-stats">
+        <div class="hstat"><span class="hs-num">6+</span><span class="hs-lab">stock tickers</span></div>
+        <div class="hstat"><span class="hs-num">100%</span><span class="hs-lab">to the listener</span></div>
+        <div class="hstat"><span class="hs-num">0</span><span class="hs-lab">custody · non-custodial</span></div>
       </div>
     </div>
 
@@ -561,7 +576,7 @@ $ grep -rE "privateKey|custody" src/   <span class="ok"># no matches — Encore 
 
   <footer>
     <span>ENCORE — LISTEN. EARN. REPEAT.</span>
-    <span class="mono">BUILD · v1.1</span>
+    <span class="mono">BUILD · v1.2</span>
   </footer>
 </div>
 
@@ -658,6 +673,10 @@ $ grep -rE "privateKey|custody" src/   <span class="ok"># no matches — Encore 
   function compact(x){ if(x<=0) return '0'; if(x>=0.001) return x.toFixed(4); var e=Math.floor(Math.log10(x)); return x.toFixed(Math.min(8, -e+2)); }
   var USD_PER_HR = 3600 * RATE * SOL_USD;   // illustrative $/hour of listening (~$0.50)
   var accumSec = 0, lastResume = 0, lastDraw = 0;
+  // restore holdings + session from this browser (per-viewer, illustrative)
+  var STORE = 'encore_state_v1';
+  (function loadState(){ try{ var s = JSON.parse(localStorage.getItem(STORE)); if(s && typeof s==='object'){ if(s.bal && typeof s.bal==='object') balances = s.bal; if(typeof s.sec==='number' && s.sec>0) accumSec = s.sec; } }catch(e){} })();
+  function saveState(){ try{ localStorage.setItem(STORE, JSON.stringify({ bal:balances, sec:elapsed() })); }catch(e){} }
   function elapsed(){ return playing ? accumSec + (performance.now()-lastResume)/1000 : accumSec; }
   var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   var PLAY_PATH = 'M8 5v14l11-7z', PAUSE_PATH = 'M6 5h4v14H6zM14 5h4v14h-4z';
@@ -778,10 +797,12 @@ $ grep -rE "privateKey|custody" src/   <span class="ok"># no matches — Encore 
       '<defs><linearGradient id="'+gid+'" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="currentColor" stop-opacity="0.3"/><stop offset="1" stop-color="currentColor" stop-opacity="0"/></linearGradient></defs>' +
       '<path class="sp-area" d="'+area+'" fill="url(#'+gid+')"/><path class="sp-line" d="'+d+'"/></svg>';
   }
-  if(payGrid){ var DEX = (window.ENCORE_DEX_URL||'').trim() || 'https://dexscreener.com';
+  var DEX = (window.ENCORE_DEX_URL||'').trim();
+  function chartUrl(tk){ return DEX ? DEX : 'https://www.tradingview.com/symbols/NASDAQ-'+encodeURIComponent(tk)+'/'; }
+  if(payGrid){
     TRACKS.forEach(function(tr, i){
-    var a = document.createElement('a'); a.className='pay-card magnetic'; a.href=DEX; a.target='_blank'; a.rel='noopener';
-    a.setAttribute('title','View chart on Dexscreener');
+    var a = document.createElement('a'); a.className='pay-card magnetic'; a.href=chartUrl(tr.ticker); a.target='_blank'; a.rel='noopener';
+    a.setAttribute('title', DEX ? 'View the $ENCORE chart' : ('View the '+tr.ticker+' chart'));
     a.innerHTML = '<span class="pay-song">'+(tr.title||'Track')+'</span>' + sparkline(i+3, 1) +
       '<span class="pay-ticker">'+lg(tr.ticker)+tr.ticker+'</span><span class="pay-est mono">≈ '+compact(USD_PER_HR/priceOf(tr.ticker))+'/h</span>' +
       '<span class="pay-go" aria-hidden="true">↗</span>';
@@ -898,7 +919,7 @@ $ grep -rE "privateKey|custody" src/   <span class="ok"># no matches — Encore 
       drawEq(ts); }catch(err){}
   }
   function toggle(){
-    if(playing){ accumSec += (performance.now() - lastResume)/1000; playing = false; stopAudio(); }
+    if(playing){ accumSec += (performance.now() - lastResume)/1000; playing = false; stopAudio(); saveState(); }
     else { lastResume = performance.now(); playing = true; startAudio(); }
     window.__encore.playing = playing;
     if(appEl) appEl.classList.toggle('playing', playing);
@@ -907,6 +928,12 @@ $ grep -rE "privateKey|custody" src/   <span class="ok"># no matches — Encore 
     playBtn.setAttribute('aria-label', playing ? 'Pause' : 'Play');
   }
   playBtn.addEventListener('click', toggle);
+  function paintReadouts(){ var s = elapsed(); if(timerEl) timerEl.textContent = fmtTime(s);
+    var usd = s * RATE * SOL_USD; if(earnedEl) earnedEl.textContent = fmtTokens(usd / priceOf(TRACKS[current].ticker));
+    if(earnedFiatEl) earnedFiatEl.textContent = '≈ $' + formatFiat(usd); }
+  setInterval(saveState, 3000);
+  window.addEventListener('visibilitychange', function(){ if(document.hidden) saveState(); });
+  window.addEventListener('pagehide', saveState);
   if(volEl){ volEl.addEventListener('input', function(){
     userVol = Math.max(0, Math.min(1, (parseFloat(volEl.value)||0)/100));
     if(audioEl) audioEl.volume = userVol;
@@ -937,7 +964,7 @@ $ grep -rE "privateKey|custody" src/   <span class="ok"># no matches — Encore 
   if(wdConnect) wdConnect.addEventListener('click', function(){ showStatus('Wallet connect opens at launch.'); });
   setInterval(function(){ if(panelWallet && !panelWallet.hidden) refreshWithdraw(); }, 300);
 
-  selectTrack(0); sizeCanvas(); positionTabInd(); requestAnimationFrame(frame);
+  selectTrack(0); sizeCanvas(); positionTabInd(); paintReadouts(); renderBalances(); requestAnimationFrame(frame);
 })();
 </script>
 
@@ -1005,6 +1032,21 @@ $ grep -rE "privateKey|custody" src/   <span class="ok"># no matches — Encore 
   requestAnimationFrame(loop);
 })();
 
+/* ===== 3D tilt on the player card (mouse perspective) ===== */
+(function(){
+  if(window.matchMedia('(prefers-reduced-motion: reduce)').matches || window.matchMedia('(hover: none)').matches) return;
+  var card = document.querySelector('.app'); if(!card) return;
+  var raf = 0, tx = 0, ty = 0;
+  card.addEventListener('mousemove', function(e){
+    var r = card.getBoundingClientRect();
+    tx = (e.clientX - r.left)/r.width - 0.5; ty = (e.clientY - r.top)/r.height - 0.5;
+    if(raf) return;
+    raf = requestAnimationFrame(function(){ raf = 0;
+      card.style.transform = 'perspective(1300px) rotateX('+(-ty*4.5).toFixed(2)+'deg) rotateY('+(tx*5.5).toFixed(2)+'deg)'; });
+  });
+  card.addEventListener('mouseleave', function(){ card.style.transform = ''; });
+})();
+
 /* ===== inject logos into inline [data-tk] mentions ===== */
 (function(){
   if(!window.encoreLogo) return;
@@ -1048,8 +1090,13 @@ $ grep -rE "privateKey|custody" src/   <span class="ok"># no matches — Encore 
 (function(){
   var nav = document.querySelector('.nav'); if(!nav) return;
   var on = false;
-  function upd(){ var s = window.pageYOffset > 12; if(s !== on){ on = s; nav.classList.toggle('scrolled', s); } }
-  window.addEventListener('scroll', upd, { passive:true }); upd();
+  function setNavH(){ document.documentElement.style.setProperty('--nav-h', Math.round(nav.getBoundingClientRect().height) + 'px'); }
+  function upd(){ var s = window.pageYOffset > 12; if(s !== on){ on = s; nav.classList.toggle('scrolled', s); } setNavH(); }
+  window.addEventListener('scroll', upd, { passive:true });
+  window.addEventListener('resize', setNavH);
+  // the nav resizes via CSS transition on scroll — keep --nav-h in sync through the whole animation
+  if('ResizeObserver' in window){ new ResizeObserver(setNavH).observe(nav); }
+  upd(); setNavH();
 })();
 
 /* ===== magnetic hover (elements follow the cursor) ===== */
