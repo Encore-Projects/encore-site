@@ -106,6 +106,8 @@
   .t-artist{ color:var(--a-muted); font-size:12.5px; }
   .t-badge{ font-family:'Space Mono', monospace; font-size:10px; letter-spacing:0.03em; color:var(--tc); border:1px solid var(--tc); border-radius:999px; padding:2px 8px; white-space:nowrap; }
   .t-dur{ font-size:12px; color:var(--a-muted); width:38px; text-align:right; flex-shrink:0; }
+  .t-right{ display:flex; flex-direction:column; align-items:flex-end; gap:4px; flex-shrink:0; }
+  .t-est{ font-size:10px; color:var(--a-muted); }
   .lib-note{ font-size:11.5px; color:var(--a-muted); margin-top:10px; }
   .withdraw-bar{ display:flex; align-items:center; gap:12px; margin-top:14px; flex-wrap:wrap; }
   .wd-btn{ font-family:'Space Mono', monospace; font-size:13px; border:1px solid var(--accent); background:transparent; color:var(--a-ink); border-radius:11px; padding:11px 20px; cursor:pointer; }
@@ -146,7 +148,25 @@
   .pay-song{ flex:1; min-width:0; font-weight:600; font-size:15px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
   .pay-arrow{ color:var(--ink-soft); }
   .pay-ticker{ font-family:'Space Mono', monospace; font-weight:700; font-size:14px; color:var(--accent); }
+  .pay-est{ font-size:11px; color:var(--ink-soft); margin-left:auto; }
+  .pay-card.magnetic{ transition:transform .18s cubic-bezier(.2,.7,.2,1), box-shadow .18s ease, border-color .18s ease; will-change:transform; }
+  .pay-card.magnetic:hover{ border-color:var(--accent); box-shadow:0 18px 40px -26px var(--shadow); }
   @media (max-width:760px){ .pay-grid{ grid-template-columns:1fr; } }
+
+  /* earnings calculator */
+  .calc{ background:var(--paper); border:1px solid var(--line); border-radius:18px; padding:26px 28px; margin-top:36px; max-width:720px; }
+  .calc-row{ display:flex; align-items:baseline; justify-content:space-between; margin-bottom:12px; }
+  .calc-row label{ font-size:14px; color:var(--ink-soft); }
+  .calc-row .mono{ font-size:18px; font-weight:700; }
+  input[type="range"]{ width:100%; accent-color:var(--accent); height:6px; margin:6px 0 22px; }
+  .calc-out{ display:grid; grid-template-columns:repeat(3,1fr); gap:14px; }
+  .calc-stat{ background:var(--bg2); border-radius:12px; padding:16px; text-align:center; transition:transform .18s cubic-bezier(.2,.7,.2,1); }
+  .cs-label{ display:block; font-family:'Space Mono', monospace; font-size:10px; letter-spacing:0.12em; text-transform:uppercase; color:var(--ink-soft); margin-bottom:6px; }
+  .cs-val{ font-size:clamp(22px,3vw,32px); font-weight:800; font-family:'Bricolage Grotesque', sans-serif; color:var(--up); letter-spacing:-0.02em; }
+  .calc-note{ font-size:11.5px; color:var(--ink-soft); margin:16px 0 0; }
+  @media (max-width:560px){ .calc-out{ grid-template-columns:1fr; } }
+
+  .artists-cta{ margin-top:8px; }
 
   .steps{ display:grid; grid-template-columns:repeat(3,1fr); gap:30px; margin-top:52px; }
   .step{ border-top:2px solid var(--ink); padding-top:20px; }
@@ -193,7 +213,8 @@
     <nav class="nav-links">
       <a href="#pays">Tracks</a>
       <a href="#how">How it works</a>
-      <a href="#math">The math</a>
+      <a href="#calc">The math</a>
+      <a href="#artists">Artists</a>
       <a href="#source">Open source</a>
     </nav>
     <a class="pill pill-dark" href="https://x.com/Encore_Projects" target="_blank" rel="noopener">Join on X</a>
@@ -250,10 +271,10 @@
         <div class="wd-panel" id="wdPanel" hidden>
           <div class="wd-head"><span class="wd-title">Withdraw your balance</span></div>
           <div class="wd-row"><span>Available</span><span class="mono" id="wdAvail">$0.00</span></div>
-          <div class="wd-row"><span>Minimum</span><span class="mono">$10.00</span></div>
-          <div class="wd-row"><span>Withdrawal fee (flat)</span><span class="mono">$3.00</span></div>
+          <div class="wd-row"><span>Minimum</span><span class="mono">$1.00</span></div>
+          <div class="wd-row"><span>Network fee</span><span class="mono">$0.20</span></div>
           <div class="wd-row wd-total"><span>You receive</span><span class="mono" id="wdReceive">$0.00</span></div>
-          <p class="wd-note">The fee is deducted from your payout — you never pay it upfront. Stock tokens go to a wallet you control; Encore never holds them.</p>
+          <p class="wd-note">The $0.20 only covers the on-chain transfer — it's not a cut, and you never pay it upfront. The $1 minimum just makes sure your payout is worth more than the network fee. Stock tokens go to a wallet you control; Encore never holds them.</p>
           <div class="wd-dest">
             <button class="wd-alt" id="wdConnect" type="button">Connect wallet</button>
             <span class="wd-or">or</span>
@@ -304,7 +325,23 @@
     <div class="split" aria-hidden="true"><span class="you">100% → YOU</span><span class="fee">FEE</span></div>
     <div class="lead-two">
       <p>No mystery yield, no deposits, no "stake to earn." Encore earns from <strong>affiliation and partner revenue</strong> on the music you play — routed to the listener as stock tokens instead of kept.</p>
-      <p>Encore takes <strong>no cut of your plays</strong>. The platform's only fee is a <strong>flat withdrawal fee</strong>, shown transparently when you cash out and deducted from the payout — never charged before, and never a surprise.</p>
+      <p>Encore takes <strong>no cut of your plays</strong>. Withdrawals carry only a <strong>small network fee</strong> to cover the on-chain transfer — shown upfront, deducted from the payout, never a surprise.</p>
+    </div>
+  </section>
+
+  <section class="band reveal" id="calc">
+    <p class="band-label">The math</p>
+    <h2>How much would <em>you</em> earn?</h2>
+    <p class="big">Drag it to your daily listening. Illustrative — real rewards track the revenue each play generates, not a fixed payout.</p>
+    <div class="calc">
+      <div class="calc-row"><label>Hours of music a day</label><span class="mono" id="calcHours">2.0h</span></div>
+      <input type="range" id="calcSlider" min="0" max="10" step="0.5" value="2" aria-label="Hours of music a day">
+      <div class="calc-out">
+        <div class="calc-stat magnetic"><span class="cs-label">Per day</span><span class="cs-val mono" id="calcDay">$0.12</span></div>
+        <div class="calc-stat magnetic"><span class="cs-label">Per month</span><span class="cs-val mono" id="calcMonth">$3.60</span></div>
+        <div class="calc-stat magnetic"><span class="cs-label">Per year</span><span class="cs-val mono" id="calcYear">$43.80</span></div>
+      </div>
+      <p class="calc-note">Illustrative rate (~$0.06 / listening hour) — not a guaranteed payout. Real value comes from partner revenue on affiliated tracks.</p>
     </div>
   </section>
 
@@ -326,6 +363,13 @@ $ npm test
    <span class="ok">✓ reward attribution — one reward per listener, per play  (24 tests)</span>
 $ grep -rE "privateKey|custody" src/   <span class="ok"># no matches — Encore never holds your keys</span></div>
     <a class="pill pill-dark" href="https://github.com/Encore-Projects/encore-core" target="_blank" rel="noopener">View the repository →</a>
+  </section>
+
+  <section class="band reveal" id="artists">
+    <p class="band-label">For artists & labels</p>
+    <h2>Put your music <em>on Encore.</em></h2>
+    <p class="big">Only affiliated releases earn — and every affiliated play sends your listeners a stock token. Want your tracks in the rotation? We're onboarding artists now.</p>
+    <a class="pill pill-dark magnetic artists-cta" href="https://x.com/Encore_Projects" target="_blank" rel="noopener">Apply to be featured →</a>
   </section>
 
   <section class="cta-band reveal" id="follow">
@@ -363,16 +407,31 @@ $ grep -rE "privateKey|custody" src/   <span class="ok"># no matches — Encore 
   ];
   window.__encore = window.__encore || { playing:false, analyser:null, freqData:null };
 
-  // Optional: clean display names from tracks.js -> window.ENCORE_TRACKS = ["Artist - Song", ...] (order = 1..6)
+  // Catalogue from tracks.js -> window.ENCORE_TRACKS = ["Artist - Song | TICKER", ...]
+  // Add as many lines as you want (unlimited): entry N maps to music/N.mp3. Ticker after "|" is optional.
   (function(){
     var names = window.ENCORE_TRACKS;
     if(!names || !names.length) return;
-    for(var i=0; i<TRACKS.length && i<names.length; i++){
-      var raw = String(names[i]||'').replace(/\.mp3$/i,'').trim();
-      if(!raw) continue;
-      var parts = raw.split(/\s[-–—]\s/);
-      if(parts.length >= 2){ TRACKS[i].artist = parts[0].trim(); TRACKS[i].title = parts.slice(1).join(' - ').trim(); }
-      else { TRACKS[i].title = raw; TRACKS[i].artist = ''; }
+    var pal = [['#8B7BFF','#3B2BE0'],['#F0562E','#F7A24A'],['#37D0E0','#3B2BE0'],['#0E9E63','#37D0E0'],['#5B8CFF','#8B7BFF'],['#F0562E','#8B7BFF']];
+    var baseLen = TRACKS.length;
+    for(var i=0; i<names.length; i++){
+      var entry = String(names[i]||'').trim();
+      var tk=''; var bar=entry.split('|');
+      if(bar.length>=2){ tk=bar.pop().trim().toUpperCase(); entry=bar.join('|').trim(); }
+      entry = entry.replace(/\.mp3$/i,'').trim();
+      if(!entry && !tk) continue;                 // empty line -> keep the default track
+      var artist='', title='';
+      var parts = entry.split(/\s[-–—]\s/);
+      if(parts.length >= 2){ artist = parts[0].trim(); title = parts.slice(1).join(' - ').trim(); }
+      else { title = entry; }
+      if(i < baseLen){
+        if(entry){ if(title) TRACKS[i].title = title; TRACKS[i].artist = artist; }
+        if(tk) TRACKS[i].ticker = tk;
+      } else {
+        var pc = pal[i % pal.length];
+        TRACKS.push({ title:title||('Track '+(i+1)), artist:artist, dur:'', c1:pc[0], c2:pc[1],
+          ticker: tk || 'AAPL', file:'music/'+(i+1)+'.mp3', synth: TRACKS[i % baseLen].synth });
+      }
     }
   })();
 
@@ -387,6 +446,12 @@ $ grep -rE "privateKey|custody" src/   <span class="ok"># no matches — Encore 
 
   var playing = false, current = -1;
   var RATE = 0.0000001111, SOL_USD = 150;
+  // illustrative reference prices (USD) so each stock token shows a realistic fractional amount
+  var PRICES = { AAPL:230, MSFT:430, NVDA:120, GOOGL:165, GOOG:167, AMZN:185, META:560,
+    TSLA:250, SPY:560, VOO:510, QQQ:490, AMD:140, NFLX:700, DIS:95, COIN:210, HOOD:70, KO:65, NKE:80, SBUX:95 };
+  function priceOf(t){ return PRICES[t] || 100; }
+  function compact(x){ if(x<=0) return '0'; if(x>=0.001) return x.toFixed(4); var e=Math.floor(Math.log10(x)); return x.toFixed(Math.min(8, -e+2)); }
+  var USD_PER_HR = 3600 * RATE * SOL_USD;   // illustrative $/hour of listening (~$0.06)
   var accumSec = 0, lastResume = 0, lastDraw = 0;
   function elapsed(){ return playing ? accumSec + (performance.now()-lastResume)/1000 : accumSec; }
   var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -492,13 +557,13 @@ $ grep -rE "privateKey|custody" src/   <span class="ok"># no matches — Encore 
     b.innerHTML =
       '<span class="t-cover" style="background:linear-gradient(140deg,'+tr.c1+','+tr.c2+')"></span>' +
       '<span class="t-info"><span class="t-title">'+tr.title+'</span><span class="t-artist">'+tr.artist+'</span></span>' +
-      '<span class="t-badge">→ '+tr.ticker+'</span><span class="t-dur mono">'+tr.dur+'</span>';
+      '<span class="t-right"><span class="t-badge">→ '+tr.ticker+'</span><span class="t-est mono">≈ '+compact(USD_PER_HR/priceOf(tr.ticker))+'/h</span></span>';
     b.addEventListener('click', function(){ selectTrack(i); showPanel('player'); });
     lib.appendChild(b);
   });
   if(payGrid){ TRACKS.forEach(function(tr){
-    var d = document.createElement('div'); d.className='pay-card';
-    d.innerHTML = '<span class="pay-song">'+(tr.title||'Track')+'</span><span class="pay-arrow">→</span><span class="pay-ticker">'+tr.ticker+'</span>';
+    var d = document.createElement('div'); d.className='pay-card magnetic';
+    d.innerHTML = '<span class="pay-song">'+(tr.title||'Track')+'</span><span class="pay-arrow">→</span><span class="pay-ticker">'+tr.ticker+'</span><span class="pay-est mono">≈ '+compact(USD_PER_HR/priceOf(tr.ticker))+'/h</span>';
     payGrid.appendChild(d);
   }); }
 
@@ -555,7 +620,7 @@ $ grep -rE "privateKey|custody" src/   <span class="ok"># no matches — Encore 
   function frame(ts){
     requestAnimationFrame(frame);
     try{ if(playing && ts - lastDraw > 80){ var s = elapsed(); timerEl.textContent = fmtTime(s);
-        var e = s * RATE; earnedEl.textContent = formatSol(e); earnedFiatEl.textContent = '≈ $' + formatFiat(e*SOL_USD); lastDraw = ts; }
+        var usd = s * RATE * SOL_USD; earnedEl.textContent = formatSol(usd / priceOf(TRACKS[current].ticker)); earnedFiatEl.textContent = '≈ $' + formatFiat(usd); lastDraw = ts; }
       drawEq(ts); }catch(err){}
   }
   function toggle(){
@@ -578,7 +643,7 @@ $ grep -rE "privateKey|custody" src/   <span class="ok"># no matches — Encore 
     btn.addEventListener('click', function(){ if(navigator.clipboard && navigator.clipboard.writeText){ navigator.clipboard.writeText(CA).then(done, fallback); } else { fallback(); } });
   })();
 
-  var MIN_USD = 10, FEE_USD = 3;
+  var MIN_USD = 1, FEE_USD = 0.20;
   var withdrawBtn = el('withdrawBtn'), wdPanel = el('wdPanel');
   var wdAvail = el('wdAvail'), wdReceive = el('wdReceive');
   var wdSubmit = el('wdSubmit'), wdStatus = el('wdStatus'), wdConnect = el('wdConnect');
@@ -587,7 +652,7 @@ $ grep -rE "privateKey|custody" src/   <span class="ok"># no matches — Encore 
     wdReceive.textContent = '$' + (bal >= MIN_USD ? Math.max(0, bal - FEE_USD) : 0).toFixed(2); wdSubmit.disabled = bal < MIN_USD; }
   function showStatus(msg){ wdStatus.hidden = false; wdStatus.textContent = msg; }
   withdrawBtn.addEventListener('click', function(){ wdPanel.hidden = !wdPanel.hidden; if(!wdPanel.hidden){ refreshWithdraw(); wdStatus.hidden = true; } });
-  wdSubmit.addEventListener('click', function(){ refreshWithdraw(); showStatus(currentUsd() < MIN_USD ? 'Minimum $' + MIN_USD.toFixed(2) + ' to withdraw.' : 'Withdrawals open at launch — follow @Encore_Projects.'); });
+  wdSubmit.addEventListener('click', function(){ refreshWithdraw(); showStatus(currentUsd() < MIN_USD ? 'Minimum $' + MIN_USD.toFixed(2) + ' — it just has to beat the network fee.' : 'Withdrawals open at launch — follow @Encore_Projects.'); });
   wdConnect.addEventListener('click', function(){ showStatus('Wallet connect opens at launch.'); });
   setInterval(function(){ if(!wdPanel.hidden) refreshWithdraw(); }, 300);
 
@@ -604,5 +669,36 @@ $ grep -rE "privateKey|custody" src/   <span class="ok"># no matches — Encore 
   }
   var io = new IntersectionObserver(function(es){ es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } }); }, { threshold:0.12 });
   items.forEach(function(n){ io.observe(n); });
+})();
+</script>
+
+<script>
+/* ===== earnings calculator (illustrative) ===== */
+(function(){
+  var slider = document.getElementById('calcSlider'); if(!slider) return;
+  var hoursEl = document.getElementById('calcHours'), dayEl = document.getElementById('calcDay'), monthEl = document.getElementById('calcMonth'), yearEl = document.getElementById('calcYear');
+  var PER_HR = 3600 * 0.0000001111 * 150; // ~$0.06 / hour, illustrative
+  function fmt(n){ return '$' + n.toFixed(2); }
+  function upd(){
+    var h = parseFloat(slider.value) || 0; hoursEl.textContent = h.toFixed(1) + 'h';
+    var day = h * PER_HR; dayEl.textContent = fmt(day); monthEl.textContent = fmt(day*30); yearEl.textContent = fmt(day*365);
+  }
+  slider.addEventListener('input', upd); upd();
+})();
+
+/* ===== magnetic hover (elements follow the cursor) ===== */
+(function(){
+  if(window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  if(window.matchMedia('(hover: none)').matches) return;
+  Array.prototype.forEach.call(document.querySelectorAll('.magnetic'), function(el){
+    el.addEventListener('mousemove', function(e){
+      var r = el.getBoundingClientRect();
+      var mx = (e.clientX - (r.left + r.width/2));
+      var my = (e.clientY - (r.top + r.height/2));
+      mx = Math.max(-40, Math.min(40, mx*0.18)); my = Math.max(-24, Math.min(24, my*0.28));
+      el.style.transform = 'translate(' + mx.toFixed(1) + 'px,' + my.toFixed(1) + 'px)';
+    });
+    el.addEventListener('mouseleave', function(){ el.style.transform = ''; });
+  });
 })();
 </script>
