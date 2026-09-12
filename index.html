@@ -255,13 +255,18 @@
 
   footer{ display:flex; justify-content:space-between; flex-wrap:wrap; gap:10px; padding:30px 0 60px; border-top:1px solid var(--line); font-family:'Space Mono', monospace; font-size:11px; color:var(--ink-soft); letter-spacing:0.04em; }
 
-  .js .reveal{ opacity:0; transform:perspective(900px) rotateX(7deg) translateY(42px) scale(.985); transform-origin:50% 100%; transition:opacity .7s ease, transform .9s cubic-bezier(.2,.75,.2,1); }
+  .js .reveal{ opacity:0; transform:perspective(1000px) rotateX(11deg) translateY(58px) scale(.965); transform-origin:50% 100%; transition:opacity .65s ease, transform .85s cubic-bezier(.2,.8,.2,1); }
   .reveal.in{ opacity:1; transform:none; }
+  /* staggered 3D pop for the 3 "how it works" steps */
+  .js .step{ opacity:0; transform:perspective(800px) rotateX(14deg) translateY(34px); transition:opacity .6s ease, transform .7s cubic-bezier(.2,.8,.2,1); }
+  .reveal.in .step{ opacity:1; transform:none; }
+  .reveal.in .step:nth-child(2){ transition-delay:.10s; }
+  .reveal.in .step:nth-child(3){ transition-delay:.20s; }
 
   @media (max-width:900px){ .hero{ grid-template-columns:1fr; gap:26px; padding:12px 0 40px; } .band{ padding:64px 0; } }
   @media (prefers-reduced-motion: reduce){
     html{ scroll-behavior:auto; } .marquee-track{ animation:none; } .pill:hover,.play:hover{ transform:none; }
-    .js .reveal{ opacity:1; transform:none; transition:none; }
+    .js .reveal, .js .step{ opacity:1; transform:none; transition:none; }
     .aurora span{ animation:none; }
   }
 
@@ -583,7 +588,7 @@ $ grep -rE "privateKey|custody" src/   <span class="ok"># no matches — Encore 
 
   <footer>
     <span>ENCORE — LISTEN. EARN. REPEAT.</span>
-    <span class="mono">BUILD · v1.4</span>
+    <span class="mono">BUILD · v1.5</span>
   </footer>
 </div>
 
@@ -985,6 +990,27 @@ $ grep -rE "privateKey|custody" src/   <span class="ok"># no matches — Encore 
   // toggle in/out so the reveal re-plays as you scroll up AND down (more dynamic)
   var io = new IntersectionObserver(function(es){ es.forEach(function(e){ e.target.classList.toggle('in', e.isIntersecting); }); }, { threshold:0.10, rootMargin:'0px 0px -6% 0px' });
   items.forEach(function(n){ io.observe(n); });
+})();
+
+/* ===== smooth in-page nav WITHOUT changing the URL (keeps the link clean, no #) ===== */
+(function(){
+  var mq = document.querySelector('.marquee');
+  function go(target, isTop){
+    if(isTop){ window.scrollTo({ top:0, behavior:'smooth' }); return; }
+    var off = (mq ? mq.getBoundingClientRect().height : 0) + 14;
+    var y = target.getBoundingClientRect().top + window.pageYOffset - off;
+    window.scrollTo({ top:Math.max(0, y), behavior:'smooth' });
+  }
+  Array.prototype.forEach.call(document.querySelectorAll('a[href^="#"]'), function(a){
+    a.addEventListener('click', function(e){
+      var id = a.getAttribute('href').slice(1);
+      var target = id ? document.getElementById(id) : null;
+      var isTop = (id === 'top' || id === '');
+      if(!target && !isTop) return;      // let unknown anchors behave normally
+      e.preventDefault();
+      go(target, isTop);
+    });
+  });
 })();
 </script>
 
