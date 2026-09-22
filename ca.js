@@ -20,3 +20,12 @@ window.ENCORE_BUY_URL = "";
 //
 // Exemple :  window.ENCORE_DEX_URL = "https://dexscreener.com/solana/3nv6Ct...";
 window.ENCORE_DEX_URL = "";
+
+
+// ===== CA INSTANTANE (optionnel, recommande pour le launch) =====
+// Colle ici l'URL d'un petit JSON (npoint.io) au format  {"ca":"...", "buy":"..."}
+// Le jour J tu modifies la valeur sur npoint -> le CA s'affiche sur le site en <15s,
+// SANS redeployer Netlify. Tant que c'est vide, on utilise window.ENCORE_CA ci-dessus.
+//
+// Exemple : window.ENCORE_CA_URL = "https://api.npoint.io/abcd1234";
+window.ENCORE_CA_URL = "";
